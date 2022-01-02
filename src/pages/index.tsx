@@ -30,8 +30,8 @@ const Home: NextPage = () => {
 
           <div className="books">
             <p>
-              <span className="title">Gospel: </span>
-              <span className="book">{plans.gospel}</span>
+              <span className="title">Bible: </span>
+              <span className="book">{plans.bible}</span>
             </p>
 
             <p>
@@ -42,6 +42,11 @@ const Home: NextPage = () => {
             <p>
               <span className="title">Proverbs: </span>
               <span className="book">{plans.proverbs}</span>
+            </p>
+
+            <p>
+              <span className="title">Gospel: </span>
+              <span className="book">{plans.gospel}</span>
             </p>
 
             <p>
