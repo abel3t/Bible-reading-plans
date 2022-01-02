@@ -10,10 +10,7 @@ import {
 } from "../constant";
 
 const Home: NextPage = () => {
-  const day = differenceInDays(
-    new Date("January 1, 2023"),
-    new Date("January 1, 2022")
-  );
+  const day = differenceInDays(new Date(), new Date("January 1, 2022"));
 
   const plans = {
     gospel: dailyGospel[day % dailyGospel.length],
@@ -26,30 +23,30 @@ const Home: NextPage = () => {
   return (
     <>
       <Box>
-        <p>DAILY BIBLE READING</p>
+        <p className="logan">DAILY BIBLE READING</p>
 
-        <div>
-          <p>{format(new Date(), "PPP")}</p>
+        <div className="app-content">
+          <p className="today"> {format(new Date(), "PPP")}</p>
 
-          <div>
+          <div className="books">
             <p>
-              <span>Gospel: </span>
-              <span>{plans.gospel}</span>
+              <span className="title">Gospel: </span>
+              <span className="book">{plans.gospel}</span>
             </p>
 
             <p>
-              <span>Psalms: </span>
-              <span>{plans.psalms}</span>
+              <span className="title">Psalms: </span>
+              <span className="book">{plans.psalms}</span>
             </p>
 
             <p>
-              <span>Proverbs: </span>
-              <span>{plans.proverbs}</span>
+              <span className="title">Proverbs: </span>
+              <span className="book">{plans.proverbs}</span>
             </p>
 
             <p>
-              <span>Acts: </span>
-              <span>{plans.acts}</span>
+              <span className="title">Acts: </span>
+              <span className="book">{plans.acts}</span>
             </p>
           </div>
         </div>
