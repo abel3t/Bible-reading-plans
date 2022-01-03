@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Backdrop, Button, Modal, Box, TextField } from '@mui/material';
 import DatePicker from '@mui/lab/DatePicker';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
@@ -7,14 +7,33 @@ import enLocale from 'date-fns/locale/en-US';
 
 const Header: React.FC = () => {
   const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState<Date | null>(new Date());
+  const [startDate, setStartDate] = React.useState<Date | null>(new Date());
+  const [settings, setSettings] = React.useState({});
+  useEffect(() => {
+    const _settings = localStorage.getItem('settings');
+    if (_settings) {
+      setSettings(_settings);
+    } else {
+      setSettings({
+        startDate: new Date()
+      });
+    }
+  }, []);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const handleSave = () => {
+    localStorage.setItem('settings', JSON.stringify({
+      ...settings,
+      startDate
+    }));
+
+    setOpen(false);
+  };
 
   const style = {
     position: 'absolute' as 'absolute',
-    top: '20%',
+    top: '26%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: '40%',
@@ -22,7 +41,7 @@ const Header: React.FC = () => {
     border: '2px solid #000',
     borderRadius: '10px',
     boxShadow: 24,
-    p: 4
+    p: 2
   };
 
   return (
@@ -52,8 +71,8 @@ const Header: React.FC = () => {
 
                     <DatePicker
                         mask="__/__/____"
-                        value={value}
-                        onChange={(newValue: any) => setValue(newValue)}
+                        value={startDate}
+                        onChange={(newDate: any) => setStartDate(newDate)}
                         renderInput={(params: any) => <TextField {...params} />}
                     />
                   </LocalizationProvider>
@@ -61,7 +80,7 @@ const Header: React.FC = () => {
               </div>
 
               <div className="flex justify-end">
-                <Button variant="outlined" className="mt-5">
+                <Button variant="outlined" className="mt-5" onClick={handleSave}>
                   Save
                 </Button>
               </div>
