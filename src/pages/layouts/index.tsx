@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Router from 'next/router';
 import { Box, CircularProgress } from '@mui/material';
 
+import Header from './header';
+
 const AppLayout: React.FC = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
 
@@ -24,7 +26,8 @@ const AppLayout: React.FC = ({ children }) => {
                   alignItems: 'center',
                   justifyContent: 'center',
                   minHeight: '100vh',
-                  width: '100%'
+                  width: '100%',
+                  backgroundColor: '#457CA3'
                 }}
             >
               <CircularProgress size={70}/>
@@ -34,10 +37,17 @@ const AppLayout: React.FC = ({ children }) => {
                 sx={{
                   minHeight: '100vh',
                   width: '100%',
-                  padding: '0 2em'
+                  backgroundColor: '#457CA3',
+                  color: '#fff',
+                  fontFamily: 'Roboto Mono',
+                  fontSize: '18px'
                 }}
+                className="p-3"
             >
+              <Header/>
+
               {children}
+
             </Box>
         )}
       </>

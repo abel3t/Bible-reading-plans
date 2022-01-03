@@ -23,34 +23,34 @@ const Home: NextPage = () => {
   return (
       <>
         <Box>
-          <p className="logan">DAILY BIBLE READING</p>
+          <div className="py-4 px-6 rounded-md w-1/2" style={{ backgroundColor: '#5A89AD', margin: '0 auto' }}>
 
-          <div className="app-content">
-            <p className="today"> {format(new Date(), 'PPP')}</p>
+            <p className="p-1 text-center rounded-sm font-bold text-2xl" style={{ backgroundColor: '#4C7693' }}> {format(new Date(),
+                'PPP')}</p>
 
-            <div className="books">
-              <p>
-                <span className="title">Bible: </span>
+            <div className="mt-5">
+              <p className="mt-2">
+                <span className="text-xl font-bold">Bible: </span>
                 <span className="book">{plans.bible}</span>
               </p>
 
-              <p>
-                <span className="title">Psalms: </span>
+              <p className="mt-2">
+                <span className="text-xl font-bold">Psalms: </span>
                 <span className="book">{plans.psalms}</span>
               </p>
 
-              <p>
-                <span className="title">Proverbs: </span>
+              <p className="mt-2">
+                <span className="text-xl font-bold">Proverbs: </span>
                 <span className="book">{plans.proverbs}</span>
               </p>
 
-              <p>
-                <span className="title">Gospel: </span>
+              <p className="mt-2">
+                <span className="text-xl font-bold">Gospel: </span>
                 <span className="book">{plans.gospel}</span>
               </p>
 
-              <p>
-                <span className="title">Acts: </span>
+              <p className="mt-2">
+                <span className="text-xl font-bold">Acts: </span>
                 <span className="book">{plans.acts}</span>
               </p>
             </div>
