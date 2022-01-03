@@ -21,10 +21,11 @@ const Home: NextPage = () => {
   const settings: any = useSelector(getSettings);
 
   useEffect(() => {
-    console.log('change nè', differenceInDays(new Date(), new Date(settings.startDate)))
-    const _day = differenceInDays(new Date(), new Date(settings.startDate));
-    setWarn(_day < 0);
-    setDay(_day);
+    const today = new Date();
+    const startDate = new Date(settings.startDate);
+
+    setWarn(today < startDate);
+    setDay(differenceInDays(new Date(), new Date(settings.startDate)));
   }, [settings]);
 
   const plans = {
@@ -48,7 +49,7 @@ const Home: NextPage = () => {
                 warn &&
                 <div className="mt-5">
                   <div className="text-center text-md">
-                    <WarningIcon style={{color: 'yellow'}} /> <span>Start Date is coming...</span>
+                    <WarningIcon style={{ color: '#F6B818' }}/> <span>Start Date is coming...</span>
                   </div>
                   <Skeleton animation="wave"/>
                   <Skeleton animation="wave"/>
