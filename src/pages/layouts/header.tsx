@@ -18,6 +18,8 @@ const Header: React.FC = () => {
     const _settings = localStorage.getItem('settings');
     if (_settings) {
       dispatch(updateSettings(JSON.parse(_settings || 'null')));
+    } else {
+      localStorage.setItem('settings', JSON.stringify({ startDate: new Date() }));
     }
   }, []);
 
