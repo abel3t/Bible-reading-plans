@@ -46,7 +46,9 @@ const AppLayout: React.FC = ({ children }) => {
             >
               <Header/>
 
-              {children}
+              <div className="mt-10">
+                {children}
+              </div>
 
             </Box>
         )}
