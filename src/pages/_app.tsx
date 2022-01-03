@@ -8,6 +8,8 @@ import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import theme from '../settings/theme';
 import AppLayout from './layouts';
+import { Provider } from 'react-redux';
+import { store } from '../settings/store';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -17,9 +19,13 @@ function MyApp({ Component, pageProps }: AppProps) {
         </Head>
         <ThemeProvider theme={theme}>
           <CssBaseline/>
-          <AppLayout>
-            <Component {...pageProps} />
-          </AppLayout>
+          <div>
+            <Provider store={store}>
+              <AppLayout>
+                <Component {...pageProps} />
+              </AppLayout>
+            </Provider>
+          </div>
         </ThemeProvider>
       </>
   );

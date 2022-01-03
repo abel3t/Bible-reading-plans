@@ -1,6 +1,10 @@
-import { Box, Button, Skeleton } from '@mui/material';
+import { Box, Skeleton } from '@mui/material';
 import type { NextPage } from 'next';
 import { format, differenceInDays } from 'date-fns';
+import WarningIcon from '@mui/icons-material/Warning';
+import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+
 import {
   dailyGospel,
   dailyPsalm,
@@ -8,34 +12,20 @@ import {
   dailyBible,
   dailyActs
 } from '../constant';
-import React, { useEffect } from 'react';
-
-interface ISettings {
-  startDate: number | Date;
-}
+import { getSettings } from '../slices/settings.slice';
 
 const Home: NextPage = () => {
-  const [isLoaded, setIsLoaded] = React.useState(false);
-  const [settings, setSettings]: [ISettings, Function] = React.useState({
-    startDate: new Date()
-  });
+  const [warn, setWarn] = React.useState(false);
   const [day, setDay] = React.useState(0);
-  useEffect(() => {
-    const _settings = localStorage.getItem('settings');
-    if (_settings) {
-      console.log('test', _settings);
 
-      setSettings(JSON.parse(_settings || 'null'));
-    }
-
-    setIsLoaded(true);
-  }, []);
+  const settings: any = useSelector(getSettings);
 
   useEffect(() => {
-    setDay(differenceInDays(new Date(), new Date(settings.startDate)));
+    console.log('change nè', differenceInDays(new Date(), new Date(settings.startDate)))
+    const _day = differenceInDays(new Date(), new Date(settings.startDate));
+    setWarn(_day < 0);
+    setDay(_day);
   }, [settings]);
-
-  console.log({ day })
 
   const plans = {
     gospel: dailyGospel[day % dailyGospel.length],
@@ -55,8 +45,11 @@ const Home: NextPage = () => {
                 'PPP')}</p>
 
             {
-                !isLoaded &&
+                warn &&
                 <div className="mt-5">
+                  <div className="text-center text-md">
+                    <WarningIcon style={{color: 'yellow'}} /> <span>Start Date is coming...</span>
+                  </div>
                   <Skeleton animation="wave"/>
                   <Skeleton animation="wave"/>
                   <Skeleton animation="wave"/>
@@ -65,7 +58,7 @@ const Home: NextPage = () => {
                 </div>
             }
             {
-                isLoaded &&
+                !warn &&
                 <div className="mt-5">
                   <p className="mt-2">
                     <span className="text-xl font-bold">Bible: </span>

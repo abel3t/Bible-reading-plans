@@ -3,30 +3,37 @@ import { Backdrop, Button, Modal, Box, TextField } from '@mui/material';
 import DatePicker from '@mui/lab/DatePicker';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import SettingsIcon from '@mui/icons-material/Settings';
 import enLocale from 'date-fns/locale/en-US';
+import { useDispatch, useSelector } from 'react-redux';
+import { getSettings, updateSettings } from '../../slices/settings.slice';
 
 const Header: React.FC = () => {
   const [open, setOpen] = React.useState(false);
   const [startDate, setStartDate] = React.useState<Date | null>(new Date());
-  const [settings, setSettings] = React.useState({});
+
+  const dispatch = useDispatch();
+
   useEffect(() => {
     const _settings = localStorage.getItem('settings');
     if (_settings) {
-      setSettings(_settings);
-    } else {
-      setSettings({
-        startDate: new Date()
-      });
+      dispatch(updateSettings(JSON.parse(_settings || 'null')));
     }
   }, []);
+
+  const settings = useSelector(getSettings);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const handleSave = () => {
-    localStorage.setItem('settings', JSON.stringify({
+    const newSettings = {
       ...settings,
       startDate
-    }));
+    };
+
+    dispatch(updateSettings(newSettings));
+
+    localStorage.setItem('settings', JSON.stringify(newSettings));
 
     setOpen(false);
   };
@@ -80,7 +87,7 @@ const Header: React.FC = () => {
               </div>
 
               <div className="flex justify-end">
-                <Button variant="outlined" className="mt-5" onClick={handleSave}>
+                <Button variant="contained" className="mt-5 capitalize" style={{backgroundColor: '#6C97B5'}} onClick={handleSave}>
                   Save
                 </Button>
               </div>
@@ -88,7 +95,10 @@ const Header: React.FC = () => {
             </Box>
           </Modal>
 
-          <Button variant="outlined" className="text-white" onClick={handleOpen}>Settings</Button>
+          <Button variant="contained" className="text-white text-sm capitalize font-normal" style={{backgroundColor: '#6C97B5'}} onClick={handleOpen}>
+            <SettingsIcon />
+            <span>Settings</span>
+          </Button>
         </div>
       </div>
   );
