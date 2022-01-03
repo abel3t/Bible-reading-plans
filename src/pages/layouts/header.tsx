@@ -86,8 +86,8 @@ const Header: React.FC = () => {
                 </div>
               </div>
 
-              <div className="flex justify-end">
-                <Button variant="contained" className="mt-5 capitalize" style={{backgroundColor: '#6C97B5'}} onClick={handleSave}>
+              <div className="flex justify-end mt-5">
+                <Button variant="contained" className="capitalize" style={{backgroundColor: '#6C97B5'}} onClick={handleSave}>
                   Save
                 </Button>
               </div>
