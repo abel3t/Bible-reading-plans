@@ -7,7 +7,12 @@ export default class MyDocument extends Document {
     return (
         <Html lang="en">
           <Head>
+            <meta property="og:title" content="Daily Reading Bible" />
+            <meta property="og:type" content="book.bible" />
+            <meta property="og:image" content="/bible.png" />
             <meta name="theme-color" content={theme.palette.primary.main}/>
+            <meta name="description" content="Bible Reading Plans for you." />
+
             <link rel="shortcut icon" href="/favicon.ico"/>
             <link
                 rel="stylesheet"
