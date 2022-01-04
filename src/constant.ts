@@ -384,7 +384,7 @@ export const defaultPlanParts: any[] = [
   },
   {
     id: 'DailyProverbs001',
-    abbr: 'Proverbs',
+    abbr: 'proverbs',
     title: 'Proverbs'
   },
   {
