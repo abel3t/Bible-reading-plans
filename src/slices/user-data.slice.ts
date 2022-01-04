@@ -10,7 +10,7 @@ export type UserDataState = {
 
 const initialState: UserDataState = {
   userData: {
-    streak: 0,
+    streak: 100,
     completedDate: {}
   }
 };
@@ -28,5 +28,5 @@ export const UserDateSlice = createSlice({
 });
 
 export const { updateUserData } = UserDateSlice.actions;
-export const getUserData = (state: RootState) => state.userData;
+export const getUserData = (state: RootState) => state.userData.userData;
 export default UserDateSlice.reducer;

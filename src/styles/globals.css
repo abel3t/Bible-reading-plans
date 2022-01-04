@@ -20,3 +20,11 @@ a {
 @tailwind utilities;
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100&display=swap');
+
+@font-face {
+  font-family: "Arial-Rounded";
+  src: url("../assets/fonts/ArialRounded.ttf");
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+}
