@@ -80,7 +80,8 @@ const Header: React.FC = () => {
                   <LocalizationProvider dateAdapter={AdapterDateFns} locale={enLocale}>
 
                     <DatePicker
-                        mask="__/__/____"
+                        mask="__ ___, ____"
+                        inputFormat="MMMM dd, yyyy"
                         value={startDate}
                         label="Start Date"
                         onChange={(newDate: any) => setStartDate(newDate)}
