@@ -45,7 +45,6 @@ const Header: React.FC = () => {
     top: '26%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: '40%',
     bgcolor: 'background.paper',
     border: '2px solid #000',
     borderRadius: '10px',
@@ -54,7 +53,7 @@ const Header: React.FC = () => {
   };
 
   return (
-      <div className="flex content-center w-1/2 border-solid border-b-2 p-2"
+      <div className="flex content-center xs:3/4 md:w-2/3 lg:w-1/2 border-solid border-b-2 p-2"
            style={{ margin: '0 auto', borderColor: '#3E6F92' }}>
         <div className="text-2xl">DAILY BIBLE READING</div>
         <div className="grow flex justify-end">
@@ -68,8 +67,9 @@ const Header: React.FC = () => {
               BackdropProps={{
                 timeout: 500
               }}
+              className="mt-20 sm:mt-10 md:mt-5 lg:mt-3"
           >
-            <Box sx={style}>
+            <Box sx={style} className="w-5/6 sm:w-3/4 md:w-2/3 lg:w-2/5">
               <div className="font-bold text-lg mb-2 py-2" style={{ borderBottom: 'solid 1px #ccc' }}>
                 Reading Settings
               </div>
@@ -89,7 +89,7 @@ const Header: React.FC = () => {
               </div>
 
               <div className="flex justify-end mt-5">
-                <Button variant="contained" className="capitalize" style={{backgroundColor: '#6C97B5'}} onClick={handleSave}>
+                <Button variant="outlined" className="capitalize" color="primary" onClick={handleSave}>
                   Save
                 </Button>
               </div>

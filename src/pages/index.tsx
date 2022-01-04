@@ -45,7 +45,7 @@ const Home: NextPage = () => {
             <meta name="viewport" content="initial-scale=1.0, width=device-width" />
           </Head>
 
-          <div className="py-4 px-6 rounded-md w-1/2" style={{ backgroundColor: '#5A89AD', margin: '0 auto' }}>
+          <div className="py-4 px-6 rounded-md sm:w-3/4 md:w-2/3 lg:w-1/2" style={{ backgroundColor: '#5A89AD', margin: '0 auto' }}>
 
             <p className="p-1 text-center rounded-sm font-bold text-2xl"
                style={{ backgroundColor: '#4C7693' }}> {format(new Date(),
