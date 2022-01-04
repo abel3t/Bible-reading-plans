@@ -3,10 +3,12 @@ import {
 } from '@reduxjs/toolkit';
 
 import settingsReducer from '../slices/settings.slice';
+import userDataReducer from '../slices/user-data.slice';
 
 export const store = configureStore({
   reducer: {
-    settings: settingsReducer
+    settings: settingsReducer,
+    userData: userDataReducer
   }
 });
 
