@@ -15,9 +15,10 @@ const Header: React.FC = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const _settings = localStorage.getItem('settings');
+    const _settings: any = JSON.parse(localStorage.getItem('settings') || 'null');
     if (_settings) {
-      dispatch(updateSettings(JSON.parse(_settings || 'null')));
+      dispatch(updateSettings(_settings));
+      setStartDate(new Date(_settings.startDate));
     } else {
       localStorage.setItem('settings', JSON.stringify({ startDate: new Date() }));
     }
@@ -81,6 +82,7 @@ const Header: React.FC = () => {
                     <DatePicker
                         mask="__/__/____"
                         value={startDate}
+                        label="Start Date"
                         onChange={(newDate: any) => setStartDate(newDate)}
                         renderInput={(params: any) => <TextField {...params} />}
                     />
