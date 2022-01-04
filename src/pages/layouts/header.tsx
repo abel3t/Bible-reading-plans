@@ -1,6 +1,6 @@
 import React from 'react';
-import HeaderSettings from '../../components/HeaderSettings';
-import HeaderStreak from '../../components/HeaderStreak';
+import HeaderSettings from 'components/HeaderSettings';
+import HeaderStreak from 'components/HeaderStreak';
 
 const Header: React.FC = () => {
   return (

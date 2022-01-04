@@ -14,8 +14,8 @@ import {
   dailyActs,
   defaultPlanParts
 } from '../constant';
-import { getSettings } from '../slices/settings.slice';
-import ReadingPart from '../components/ReadingPart';
+import { getSettings } from 'slices/settings.slice';
+import ReadingPart from 'components/ReadingPart';
 
 const Home: NextPage = () => {
   const [warn, setWarn] = React.useState(false);

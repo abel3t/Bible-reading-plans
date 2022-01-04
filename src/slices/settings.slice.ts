@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from '../settings/store';
+import { RootState } from 'settings/store';
 
 export type SettingsState = {
   settings: {

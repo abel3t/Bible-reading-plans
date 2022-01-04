@@ -2,7 +2,7 @@ import React from 'react';
 import { Checkbox } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserData, updateUserData } from 'slices/user-data.slice';
-import { unixStartDate } from '../utils/datetime';
+import { unixStartDate } from 'utils/datetime';
 import { defaultPlanParts } from '../constant';
 
 interface IReadingPartProps {

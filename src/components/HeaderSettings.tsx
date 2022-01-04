@@ -6,7 +6,7 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import enLocale from 'date-fns/locale/en-US';
 import DatePicker from '@mui/lab/DatePicker';
 import SettingsIcon from '@mui/icons-material/Settings';
-import { getSettings, updateSettings } from '../slices/settings.slice';
+import { getSettings, updateSettings } from 'slices/settings.slice';
 
 const HeaderSettings: React.FC = () => {
   const [open, setOpen] = React.useState(false);
