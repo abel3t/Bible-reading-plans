@@ -10,7 +10,7 @@ export type UserDataState = {
 
 const initialState: UserDataState = {
   userData: {
-    streak: 100,
+    streak: 0,
     completedDate: {}
   }
 };
