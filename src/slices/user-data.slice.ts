@@ -4,13 +4,17 @@ import { RootState } from '../settings/store';
 export type UserDataState = {
   userData: {
     streak: number,
-    completedDate: Record<string, boolean>
+    receivedStreak: Record<string, boolean>,
+    completedDate: Record<string, boolean>,
+    completedParts: Record<string, Record<string, boolean>>
   }
 };
 
 const initialState: UserDataState = {
   userData: {
     streak: 0,
+    receivedStreak: {},
+    completedParts: {},
     completedDate: {}
   }
 };

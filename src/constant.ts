@@ -46,7 +46,7 @@ export const dailyGospel = [
   'John 21'
 ];
 
-export const dailyPsalm = [
+export const dailyPsalms = [
   'Psalm 1-2',
   'Psalm 3-4',
   'Psalm 5-6',
@@ -369,4 +369,32 @@ export const dailyBible = [
   'Revelation 12-15',
   'Revelation 16-19',
   'Revelation 20-22'
+];
+
+export const defaultPlanParts: any[] = [
+  {
+    id: 'DailyGospel001',
+    abbr: 'gospel',
+    title: 'Gospel'
+  },
+  {
+    id: 'DailyPsalms001',
+    abbr: 'psalms',
+    title: 'Psalms'
+  },
+  {
+    id: 'DailyProverbs001',
+    abbr: 'Proverbs',
+    title: 'Proverbs'
+  },
+  {
+    id: 'DailyActs001',
+    abbr: 'acts',
+    title: 'Acts'
+  },
+  {
+    id: 'DailyBible001',
+    abbr: 'bible',
+    title: 'Bible'
+  }
 ];

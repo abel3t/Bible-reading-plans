@@ -1,6 +1,6 @@
 import { Box, Skeleton } from '@mui/material';
 import type { NextPage } from 'next';
-import Head from 'next/head'
+import Head from 'next/head';
 import { format, differenceInDays } from 'date-fns';
 import WarningIcon from '@mui/icons-material/Warning';
 import React, { useEffect } from 'react';
@@ -8,12 +8,14 @@ import { useSelector } from 'react-redux';
 
 import {
   dailyGospel,
-  dailyPsalm,
+  dailyPsalms,
   dailyProverbs,
   dailyBible,
-  dailyActs
+  dailyActs,
+  defaultPlanParts
 } from '../constant';
 import { getSettings } from '../slices/settings.slice';
+import ReadingPart from '../components/ReadingPart';
 
 const Home: NextPage = () => {
   const [warn, setWarn] = React.useState(false);
@@ -29,9 +31,9 @@ const Home: NextPage = () => {
     setDay(differenceInDays(new Date(), new Date(settings.startDate)));
   }, [settings]);
 
-  const plans = {
+  const plans: any = {
     gospel: dailyGospel[day % dailyGospel.length],
-    psalms: dailyPsalm[day % dailyPsalm.length],
+    psalms: dailyPsalms[day % dailyPsalms.length],
     proverbs: dailyProverbs[day % dailyProverbs.length],
     bible: dailyBible[day % dailyBible.length],
     acts: dailyActs[day % dailyActs.length]
@@ -42,10 +44,11 @@ const Home: NextPage = () => {
         <Box>
           <Head>
             <title>Daily Reading Bible</title>
-            <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+            <meta name="viewport" content="initial-scale=1.0, width=device-width"/>
           </Head>
 
-          <div className="py-4 px-6 rounded-md sm:w-3/4 md:w-2/3 lg:w-1/2" style={{ backgroundColor: '#5A89AD', margin: '0 auto' }}>
+          <div className="py-4 px-6 rounded-md sm:w-3/4 md:w-2/3 lg:w-1/2"
+               style={{ backgroundColor: '#5A89AD', margin: '0 auto' }}>
 
             <p className="p-1 text-center rounded-sm font-bold text-2xl"
                style={{ backgroundColor: '#4C7693' }}> {format(new Date(),
@@ -66,32 +69,9 @@ const Home: NextPage = () => {
             }
             {
                 !warn &&
-                <div className="mt-5">
-                  <p className="mt-2">
-                    <span className="text-xl font-bold">Bible: </span>
-                    <span className="book">{plans.bible}</span>
-                  </p>
-
-                  <p className="mt-2">
-                    <span className="text-xl font-bold">Psalms: </span>
-                    <span className="book">{plans.psalms}</span>
-                  </p>
-
-                  <p className="mt-2">
-                    <span className="text-xl font-bold">Proverbs: </span>
-                    <span className="book">{plans.proverbs}</span>
-                  </p>
-
-                  <p className="mt-2">
-                    <span className="text-xl font-bold">Gospel: </span>
-                    <span className="book">{plans.gospel}</span>
-                  </p>
-
-                  <p className="mt-2">
-                    <span className="text-xl font-bold">Acts: </span>
-                    <span className="book">{plans.acts}</span>
-                  </p>
-                </div>
+                defaultPlanParts.map(({ id, abbr, title }, index: number) => {
+                  return <ReadingPart key={index} content={plans[abbr]} id={id} title={title}/>;
+                })
             }
           </div>
         </Box>
