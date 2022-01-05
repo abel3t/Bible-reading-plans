@@ -77,7 +77,6 @@ const HeaderSettings: React.FC = () => {
                 <LocalizationProvider dateAdapter={AdapterDateFns} locale={enLocale}>
 
                   <DatePicker
-                      mask="__ ___, ____"
                       inputFormat="MMMM dd, yyyy"
                       value={startDate}
                       label="Start Date"
