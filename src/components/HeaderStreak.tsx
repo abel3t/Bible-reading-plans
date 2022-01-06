@@ -15,8 +15,13 @@ const HeaderStreak: React.FC = () => {
     if (_userData) {
       const startOfYesterdayUnix = unixStartDate() - 86400;
       if (!_userData?.receivedStreak?.[startOfYesterdayUnix]) {
+        localStorage.setItem('userData', JSON.stringify({
+          ..._userData,
+          streak: 0
+        }));
+
         dispatch(updateUserData({
-          ...userData,
+          ..._userData,
           streak: 0
         }));
       } else {
