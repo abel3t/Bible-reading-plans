@@ -1,4 +1,4 @@
-import { getUnixTime } from 'date-fns';
+import { getUnixTime, startOfDay } from 'date-fns';
 
 export function unixTime(): number {
   const dateTime = new Date();
@@ -19,4 +19,8 @@ export function unixStartDate(): number {
   const year = dateTime.getFullYear();
 
   return getUnixTime(Date.UTC(year, month, day, 0, 0, 0));
+}
+
+export function unixLocalTimeStartDate(): number {
+  return getUnixTime(startOfDay(new Date()));
 }

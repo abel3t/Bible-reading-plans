@@ -2,7 +2,7 @@ import React from 'react';
 import { Checkbox } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserData, updateUserData } from 'slices/user-data.slice';
-import { unixStartDate } from 'utils/datetime';
+import { unixLocalTimeStartDate } from 'utils/datetime';
 import { defaultPlanParts } from '../constant';
 
 interface IReadingPartProps {
@@ -16,7 +16,7 @@ export default function ReadingPart({ id, title, content }: IReadingPartProps) {
 
   const dispatch = useDispatch();
   const userData = useSelector(getUserData);
-  const startOfDayUnix = unixStartDate();
+  const startOfDayUnix = unixLocalTimeStartDate();
   const startOfYesterdayUnix = startOfDayUnix - 86400;
 
   const onChangeChecked = (event: any) => {
