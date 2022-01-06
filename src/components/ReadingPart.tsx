@@ -17,6 +17,7 @@ export default function ReadingPart({ id, title, content }: IReadingPartProps) {
   const dispatch = useDispatch();
   const userData = useSelector(getUserData);
   const startOfDayUnix = unixStartDate();
+  const startOfYesterdayUnix = startOfDayUnix - 86400;
 
   const onChangeChecked = (event: any) => {
     const todayCompletedParts: any = userData?.completedParts?.[startOfDayUnix] || {};
@@ -31,11 +32,13 @@ export default function ReadingPart({ id, title, content }: IReadingPartProps) {
     if (completedParts.length === defaultPlanParts.length && !receivedStreak[startOfDayUnix]) {
       ++streak;
       receivedStreak = {
+        [startOfYesterdayUnix]: receivedStreak[startOfYesterdayUnix] || false,
         [startOfDayUnix]: true
       }
     } else if (receivedStreak[startOfDayUnix]) {
       --streak;
       receivedStreak = {
+        [startOfYesterdayUnix]: receivedStreak[startOfYesterdayUnix] || false,
         [startOfDayUnix]: false
       }
     }
