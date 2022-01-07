@@ -1,36 +1,12 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { getUserData, updateUserData } from 'slices/user-data.slice';
-import { unixLocalTimeStartDate } from '../utils/datetime';
+import { getUserData } from 'slices/user-data.slice';
 
 const HeaderStreak: React.FC = () => {
   const userData: any = useSelector(getUserData);
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    const _userData: any = JSON.parse(localStorage.getItem('userData') || 'null');
-
-    if (_userData) {
-      const startOfYesterdayUnix = unixLocalTimeStartDate() - 86400;
-      if (!_userData?.receivedStreak?.[startOfYesterdayUnix]) {
-        localStorage.setItem('userData', JSON.stringify({
-          ..._userData,
-          streak: 0
-        }));
-
-        dispatch(updateUserData({
-          ..._userData,
-          streak: 0
-        }));
-      } else {
-        dispatch(updateUserData(_userData));
-      }
-    } else {
-      localStorage.setItem('userData', JSON.stringify(userData));
-    }
-  }, []);
 
   return (
       <div className="flex items-center justify-center mr-5" style={{ color: userData.streak ? '#F19B38' : '#eee' }}>

@@ -1,6 +1,7 @@
 import React from 'react';
 import HeaderSettings from 'components/HeaderSettings';
 import HeaderStreak from 'components/HeaderStreak';
+import Auth from 'components/Auth';
 
 const Header: React.FC = () => {
   return (
@@ -10,6 +11,7 @@ const Header: React.FC = () => {
         <div className="grow flex justify-end">
           <HeaderStreak />
           <HeaderSettings />
+          <Auth />
         </div>
       </div>
   );

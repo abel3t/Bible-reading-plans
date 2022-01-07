@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getUserData, updateUserData } from 'slices/user-data.slice';
 import { unixLocalTimeStartDate } from 'utils/datetime';
 import { defaultPlanParts } from '../constant';
+import { setPathValue } from '../services/firebase';
 
 interface IReadingPartProps {
   id: string,
@@ -19,7 +20,7 @@ export default function ReadingPart({ id, title, content }: IReadingPartProps) {
   const startOfDayUnix = unixLocalTimeStartDate();
   const startOfYesterdayUnix = startOfDayUnix - 86400;
 
-  const onChangeChecked = (event: any) => {
+  const onChangeChecked = async (event: any) => {
     const todayCompletedParts: any = userData?.completedParts?.[startOfDayUnix] || {};
     const newCompletedParts = {
       ...todayCompletedParts,
@@ -54,7 +55,11 @@ export default function ReadingPart({ id, title, content }: IReadingPartProps) {
       receivedStreak
     };
 
-    localStorage.setItem('userData', JSON.stringify(newUserData));
+
+
+    const userId: string = localStorage.getItem('userId') || '';
+
+    await setPathValue(userId, '', newUserData);
 
     dispatch(updateUserData(newUserData));
   };
