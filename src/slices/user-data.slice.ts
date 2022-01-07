@@ -8,6 +8,7 @@ export type UserDataState = {
     completedParts: Record<string, Record<string, boolean>>
   },
   receivedStreaks: Record<string, boolean>,
+  isAuthenticated: boolean
 };
 
 const initialState: UserDataState = {
@@ -17,6 +18,7 @@ const initialState: UserDataState = {
     completedDate: {}
   },
   receivedStreaks: {},
+  isAuthenticated: false
 };
 
 export const UserDateSlice = createSlice({
@@ -33,10 +35,14 @@ export const UserDateSlice = createSlice({
         ...action.payload
       };
     },
+    updateIsAuthenticated:  (state, action: PayloadAction<any>) => {
+      state.isAuthenticated = action.payload;
+    }
   }
 });
 
-export const { updateUserData, updateReceivedStreaks } = UserDateSlice.actions;
+export const { updateUserData, updateReceivedStreaks, updateIsAuthenticated } = UserDateSlice.actions;
 export const getUserData = (state: RootState) => state.userData.userData;
 export const getReceivedStreaks = (state: RootState) => state.userData.receivedStreaks;
+export const getIsAuthenticated = (state: RootState) => state.userData.isAuthenticated;
 export default UserDateSlice.reducer;

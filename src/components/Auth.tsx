@@ -4,7 +4,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useDispatch } from 'react-redux';
 import Image from 'next/image';
 
-import { updateUserData } from 'slices/user-data.slice';
+import { updateIsAuthenticated, updateUserData } from 'slices/user-data.slice';
 import { unixLocalTimeStartDate } from 'utils/datetime';
 import { setPathValue, signInWithGoogle } from 'services/firebase';
 
@@ -24,6 +24,8 @@ const Auth: React.FC = () => {
   const dispatch = useDispatch();
   const handleSignWithGoogle = async () => {
     const { userId, userImageUrl, userData, receivedStreaks }: any = await signInWithGoogle();
+
+    dispatch(updateIsAuthenticated(true));
 
     if (userId) {
       localStorage.setItem('userId', userId);

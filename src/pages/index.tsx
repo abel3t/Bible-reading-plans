@@ -4,7 +4,7 @@ import Head from 'next/head';
 import { format, differenceInDays } from 'date-fns';
 import WarningIcon from '@mui/icons-material/Warning';
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import {
   dailyGospel,
@@ -17,14 +17,15 @@ import {
 import { getSettings } from 'slices/settings.slice';
 import ReadingPart from 'components/ReadingPart';
 import { unixLocalTimeStartDate, unixTime } from 'utils/datetime';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { getIsAuthenticated, updateIsAuthenticated } from '../slices/user-data.slice';
 
 const Home: NextPage = () => {
   const [warn, setWarn] = React.useState(false);
-  const [isAuthenticate, setIsAuthenticate] = useState(false);
   const [day, setDay] = React.useState(0);
 
   const settings: any = useSelector(getSettings);
+  const dispatch = useDispatch();
+  const isAuthenticated: boolean = useSelector(getIsAuthenticated);
 
   useEffect(() => {
     const today = unixTime(new Date());
@@ -34,7 +35,7 @@ const Home: NextPage = () => {
     const userImageUrl = localStorage.getItem('userImageUrl');
 
     if (userId && userImageUrl) {
-      setIsAuthenticate(true);
+      dispatch(updateIsAuthenticated(true));
     }
 
     setWarn(today < startDate);
@@ -65,14 +66,14 @@ const Home: NextPage = () => {
                 'PPP')}</p>
 
             {
-              !isAuthenticate &&
+                !isAuthenticated &&
                 <div>
                   <p className="mt-5 text-center text-xl">Please login to continue!</p>
                 </div>
             }
 
             {
-                isAuthenticate && warn &&
+                isAuthenticated && warn &&
                 <div className="mt-5">
                   <div className="text-center text-md">
                     <WarningIcon style={{ color: '#F6B818' }}/> <span>Start Date is coming...</span>
@@ -85,7 +86,7 @@ const Home: NextPage = () => {
                 </div>
             }
             {
-              isAuthenticate && !warn &&
+                isAuthenticated && !warn &&
                 defaultPlanParts.map(({ id, abbr, title }, index: number) => {
                   return <ReadingPart key={index} content={plans[abbr]} id={id} title={title}/>;
                 })

@@ -9,7 +9,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import { getSettings, updateSettings } from 'slices/settings.slice';
 import { getPathValue, setPathValue } from '../services/firebase';
 import { unixLocalTimeStartDate } from '../utils/datetime';
-import { updateUserData } from '../slices/user-data.slice';
+import { getIsAuthenticated, updateUserData } from '../slices/user-data.slice';
 import { getReceivedStreaks } from '../utils/shared';
 
 const HeaderSettings: React.FC = () => {
@@ -46,7 +46,9 @@ const HeaderSettings: React.FC = () => {
     getPathValue(`settings/${userId}/`)
         .then(settings => {
           dispatch(updateSettings(settings));
+
           setStartDate(settings.startDate);
+
         })
         .catch(() => {
           setPathValue(`settings/${userId}/`, { startDate: unixLocalTimeStartDate() }).then(() => true);
@@ -54,15 +56,16 @@ const HeaderSettings: React.FC = () => {
         });
   };
 
+  const settings = useSelector(getSettings);
+  const isAuthenticated: boolean = useSelector(getIsAuthenticated);
+
   useEffect(() => {
     const userId = localStorage.getItem('userId') || '';
     if (userId) {
       getUserSettings(userId).then(() => true);
       getUserData(userId).then(() => true);
     }
-  }, []);
-
-  const settings = useSelector(getSettings);
+  }, [isAuthenticated]);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -117,7 +120,7 @@ const HeaderSettings: React.FC = () => {
                   !startDate && <Skeleton animation="wave" width="60%"/>
               }
               {
-                  startDate && <div>
+                  !!startDate && <div>
                     <LocalizationProvider dateAdapter={AdapterDateFns} locale={enLocale}>
 
                       <DatePicker
