@@ -38,7 +38,7 @@ const Home: NextPage = () => {
     }
 
     setWarn(today < startDate);
-    setDay(differenceInDays(new Date(), new Date(settings.startDate)));
+    setDay(differenceInDays(new Date(today * 1000), new Date(settings.startDate * 1000)));
   }, [settings]);
 
   const plans: any = {
