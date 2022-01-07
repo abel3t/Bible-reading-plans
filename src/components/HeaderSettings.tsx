@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Backdrop, Box, Button, Modal, TextField } from '@mui/material';
+import { Backdrop, Box, Button, Modal, Skeleton, TextField } from '@mui/material';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import enLocale from 'date-fns/locale/en-US';
@@ -80,22 +80,27 @@ const HeaderSettings: React.FC = () => {
             </div>
             <div className="py-2 flex justify-between items-center" style={{ borderBottom: 'solid 1px #ccc' }}>
               <div className="font-bold">Start Date</div>
-              <div>
-                <LocalizationProvider dateAdapter={AdapterDateFns} locale={enLocale}>
+              {
+                  !startDate && <Skeleton animation="wave" width="60%"/>
+              }
+              {
+                  startDate && <div>
+                    <LocalizationProvider dateAdapter={AdapterDateFns} locale={enLocale}>
 
-                  <DatePicker
-                      inputFormat="MMMM dd, yyyy"
-                      value={new Date(startDate * 1000)}
-                      label="Start Date"
-                      onChange={(newDate: any) => setStartDate(unixLocalTimeStartDate(newDate))}
-                      renderInput={(params: any) => <TextField {...params} />}
-                  />
-                </LocalizationProvider>
-              </div>
+                      <DatePicker
+                          inputFormat="MMMM dd, yyyy"
+                          value={new Date(startDate * 1000)}
+                          label="Start Date"
+                          onChange={(newDate: any) => setStartDate(unixLocalTimeStartDate(newDate))}
+                          renderInput={(params: any) => <TextField {...params} />}
+                      />
+                    </LocalizationProvider>
+                  </div>
+              }
             </div>
 
             <div className="flex justify-end mt-5">
-              <Button variant="outlined" className="capitalize" color="primary" onClick={handleSave}>
+              <Button variant="outlined" className="capitalize" color="primary" onClick={handleSave} disabled={!startDate}>
                 Save
               </Button>
             </div>
