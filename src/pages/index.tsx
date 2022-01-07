@@ -1,9 +1,9 @@
-import { Box, Skeleton } from '@mui/material';
+import { Box, Button, Skeleton } from '@mui/material';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import { format, differenceInDays } from 'date-fns';
 import WarningIcon from '@mui/icons-material/Warning';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import {
@@ -17,9 +17,11 @@ import {
 import { getSettings } from 'slices/settings.slice';
 import ReadingPart from 'components/ReadingPart';
 import { unixLocalTimeStartDate, unixTime } from 'utils/datetime';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 const Home: NextPage = () => {
   const [warn, setWarn] = React.useState(false);
+  const [isAuthenticate, setIsAuthenticate] = useState(false);
   const [day, setDay] = React.useState(0);
 
   const settings: any = useSelector(getSettings);
@@ -27,6 +29,13 @@ const Home: NextPage = () => {
   useEffect(() => {
     const today = unixTime(new Date());
     const startDate = unixLocalTimeStartDate(new Date(settings.startDate));
+
+    const userId = localStorage.getItem('userId');
+    const userImageUrl = localStorage.getItem('userImageUrl');
+
+    if (userId && userImageUrl) {
+      setIsAuthenticate(true);
+    }
 
     setWarn(today < startDate);
     setDay(differenceInDays(new Date(), new Date(settings.startDate)));
@@ -56,7 +65,14 @@ const Home: NextPage = () => {
                 'PPP')}</p>
 
             {
-                warn &&
+              !isAuthenticate &&
+                <div>
+                  <p className="mt-5 text-center text-xl">Please login to continue!</p>
+                </div>
+            }
+
+            {
+                isAuthenticate && warn &&
                 <div className="mt-5">
                   <div className="text-center text-md">
                     <WarningIcon style={{ color: '#F6B818' }}/> <span>Start Date is coming...</span>
@@ -69,7 +85,7 @@ const Home: NextPage = () => {
                 </div>
             }
             {
-                !warn &&
+              isAuthenticate && !warn &&
                 defaultPlanParts.map(({ id, abbr, title }, index: number) => {
                   return <ReadingPart key={index} content={plans[abbr]} id={id} title={title}/>;
                 })
