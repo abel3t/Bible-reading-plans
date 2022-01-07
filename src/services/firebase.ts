@@ -15,8 +15,6 @@ import 'firebase/compat/firestore';
 import { firebaseConfig } from '../utils/firebaseConfig';
 import { unixLocalTimeStartDate } from '../utils/datetime';
 
-console.log(firebaseConfig)
-
 // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
 
