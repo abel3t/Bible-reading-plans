@@ -15,6 +15,8 @@ import 'firebase/compat/firestore';
 import { firebaseConfig } from '../utils/firebaseConfig';
 import { unixLocalTimeStartDate } from '../utils/datetime';
 
+console.log(firebaseConfig)
+
 // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
 
@@ -27,11 +29,6 @@ export const signInWithGoogle = () => {
       .then(async (result) => {
         const userId = result.user.uid;
         const userImageUrl = result.user.photoURL;
-
-        console.log({
-          userId,
-          userImageUrl
-        })
 
         const startOfDayUnix = unixLocalTimeStartDate();
         const startOfYesterdayUnix = startOfDayUnix - 86400;
