@@ -19,14 +19,15 @@ const HeaderSettings: React.FC = () => {
   useEffect(() => {
     const userId = localStorage.getItem('userId') || '';
 
-    const _settings: any = getPathValue(`settings/${userId}/`);
-
-    if (_settings) {
-      dispatch(updateSettings(_settings));
-      setStartDate(_settings.startDate);
-    } else {
-      setPathValue(`settings/${userId}/`, { startDate: unixLocalTimeStartDate() }).then(() => true);
-    }
+    getPathValue(`settings/${userId}/`)
+        .then(settings => {
+          dispatch(updateSettings(settings));
+          console.log(settings)
+          setStartDate(settings.startDate);
+        })
+        .catch(() => {
+          setPathValue(`settings/${userId}/`, { startDate: unixLocalTimeStartDate() }).then(() => true);
+        });
   }, []);
 
   const settings = useSelector(getSettings);
@@ -87,7 +88,7 @@ const HeaderSettings: React.FC = () => {
                       inputFormat="MMMM dd, yyyy"
                       value={new Date(startDate * 1000)}
                       label="Start Date"
-                      onChange={(newDate: any) => setStartDate(newDate)}
+                      onChange={(newDate: any) => setStartDate(unixLocalTimeStartDate(newDate))}
                       renderInput={(params: any) => <TextField {...params} />}
                   />
                 </LocalizationProvider>

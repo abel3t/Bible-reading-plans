@@ -4,19 +4,19 @@ import { RootState } from 'settings/store';
 export type UserDataState = {
   userData: {
     streak: number,
-    receivedStreak: Record<string, boolean>,
     completedDate: Record<string, boolean>,
     completedParts: Record<string, Record<string, boolean>>
-  }
+  },
+  receivedStreaks: Record<string, boolean>,
 };
 
 const initialState: UserDataState = {
   userData: {
     streak: 0,
-    receivedStreak: {},
     completedParts: {},
     completedDate: {}
-  }
+  },
+  receivedStreaks: {},
 };
 
 export const UserDateSlice = createSlice({
@@ -27,10 +27,16 @@ export const UserDateSlice = createSlice({
       state.userData = {
         ...action.payload
       };
-    }
+    },
+    updateReceivedStreaks: (state, action: PayloadAction<any>) => {
+      state.receivedStreaks = {
+        ...action.payload
+      };
+    },
   }
 });
 
-export const { updateUserData } = UserDateSlice.actions;
+export const { updateUserData, updateReceivedStreaks } = UserDateSlice.actions;
 export const getUserData = (state: RootState) => state.userData.userData;
+export const getReceivedStreaks = (state: RootState) => state.userData.receivedStreaks;
 export default UserDateSlice.reducer;

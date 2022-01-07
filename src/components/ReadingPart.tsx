@@ -1,7 +1,7 @@
 import React from 'react';
 import { Checkbox } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUserData, updateUserData } from 'slices/user-data.slice';
+import { getReceivedStreaks, getUserData, updateReceivedStreaks, updateUserData } from 'slices/user-data.slice';
 import { unixLocalTimeStartDate } from 'utils/datetime';
 import { defaultPlanParts } from '../constant';
 import { setPathValue } from '../services/firebase';
@@ -17,6 +17,8 @@ export default function ReadingPart({ id, title, content }: IReadingPartProps) {
 
   const dispatch = useDispatch();
   const userData = useSelector(getUserData);
+  const receivedStreaks = useSelector(getReceivedStreaks);
+
   const startOfDayUnix = unixLocalTimeStartDate();
   const startOfYesterdayUnix = startOfDayUnix - 86400;
 
@@ -28,20 +30,21 @@ export default function ReadingPart({ id, title, content }: IReadingPartProps) {
     };
 
     const completedParts = Object.values(newCompletedParts).filter((isCompleted: any) => !!isCompleted);
-    let { streak, receivedStreak } = userData;
+    let streak = userData.streak;
+    let newReceivedStreaks: Record<string, boolean> = {};
 
-    if (completedParts.length === defaultPlanParts.length && !receivedStreak[startOfDayUnix]) {
+    if (completedParts.length === defaultPlanParts.length && !receivedStreaks[startOfDayUnix]) {
       ++streak;
-      receivedStreak = {
-        [startOfYesterdayUnix]: receivedStreak[startOfYesterdayUnix] || false,
+      newReceivedStreaks = {
+        [startOfYesterdayUnix]: receivedStreaks[startOfYesterdayUnix] || false,
         [startOfDayUnix]: true
-      }
-    } else if (receivedStreak[startOfDayUnix]) {
+      };
+    } else if (receivedStreaks[startOfDayUnix]) {
       --streak;
-      receivedStreak = {
-        [startOfYesterdayUnix]: receivedStreak[startOfYesterdayUnix] || false,
+      newReceivedStreaks = {
+        [startOfYesterdayUnix]: receivedStreaks[startOfYesterdayUnix] || false,
         [startOfDayUnix]: false
-      }
+      };
     }
 
     const newUserData = {
@@ -51,14 +54,18 @@ export default function ReadingPart({ id, title, content }: IReadingPartProps) {
           ...newCompletedParts
         }
       },
-      streak,
-      receivedStreak
+      streak
     };
 
     const userId: string = localStorage.getItem('userId') || '';
 
-    await setPathValue(`users/${userId}`, newUserData);
+    await Promise.all([
+      setPathValue(`users/${userId}`, newUserData),
+      setPathValue(`receivedStreaks/${userId}/${startOfDayUnix}`, newReceivedStreaks[startOfDayUnix]),
+      setPathValue(`receivedStreaks/${userId}/${startOfDayUnix}`, newReceivedStreaks[startOfYesterdayUnix])
+    ]);
 
+    dispatch(updateReceivedStreaks(newReceivedStreaks));
     dispatch(updateUserData(newUserData));
   };
 

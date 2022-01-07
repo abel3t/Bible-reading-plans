@@ -7,18 +7,17 @@ import { updateUserData } from 'slices/user-data.slice';
 import { unixLocalTimeStartDate } from 'utils/datetime';
 import { signInWithGoogle } from 'services/firebase';
 
-
 const Auth: React.FC = () => {
   const dispatch = useDispatch();
   const handleSignWithGoogle = async () => {
-    const { userId, userData } = await signInWithGoogle();
+    const { userId, userData, receivedStreaks }: any = await signInWithGoogle();
 
     if (userId) {
       localStorage.setItem('userId', userId);
     }
 
     const startOfYesterdayUnix = unixLocalTimeStartDate() - 86400;
-    if (!userData?.receivedStreak?.[startOfYesterdayUnix]) {
+    if (!receivedStreaks?.[startOfYesterdayUnix]) {
       dispatch(updateUserData({
         ...userData,
         streak: 0
