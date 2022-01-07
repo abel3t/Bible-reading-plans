@@ -1,9 +1,9 @@
-import { Box, Button, Skeleton } from '@mui/material';
+import { Box, Skeleton } from '@mui/material';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import { format, differenceInDays } from 'date-fns';
 import WarningIcon from '@mui/icons-material/Warning';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
@@ -16,7 +16,7 @@ import {
 } from '../constant';
 import { getSettings } from 'slices/settings.slice';
 import ReadingPart from 'components/ReadingPart';
-import { unixLocalTimeStartDate, unixTime } from 'utils/datetime';
+import { unixLocalTimeStartDate } from 'utils/datetime';
 import { getIsAuthenticated, updateIsAuthenticated } from '../slices/user-data.slice';
 
 const Home: NextPage = () => {
@@ -28,8 +28,8 @@ const Home: NextPage = () => {
   const isAuthenticated: boolean = useSelector(getIsAuthenticated);
 
   useEffect(() => {
-    const today = unixTime(new Date());
-    const startDate = unixLocalTimeStartDate(new Date(settings.startDate));
+    const today = unixLocalTimeStartDate();
+    const startDate = unixLocalTimeStartDate(new Date(settings.startDate * 1000));
 
     const userId = localStorage.getItem('userId');
     const userImageUrl = localStorage.getItem('userImageUrl');

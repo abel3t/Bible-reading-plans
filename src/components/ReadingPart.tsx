@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getReceivedStreaks, getUserData, updateReceivedStreaks, updateUserData } from 'slices/user-data.slice';
 import { unixLocalTimeStartDate } from 'utils/datetime';
 import { defaultPlanParts } from '../constant';
-import { getPathValue, setPathValue } from '../services/firebase';
+import { setPathValue } from '../services/firebase';
 
 interface IReadingPartProps {
   id: string,

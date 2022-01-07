@@ -47,10 +47,14 @@ const HeaderSettings: React.FC = () => {
   const getUserSettings = async (userId: string) => {
     getPathValue(`settings/${userId}/`)
         .then(settings => {
-          dispatch(updateSettings(settings));
-
-          setStartDate(settings.startDate);
-
+          if (settings.startDate) {
+            dispatch(updateSettings(settings));
+            setStartDate(settings.startDate);
+          } else {
+            dispatch(updateSettings({ startDate: unixLocalTimeStartDate(new Date()) }));
+            setPathValue(`settings/${userId}/`, { startDate: unixLocalTimeStartDate() }).then(() => true);
+            setStartDate(unixLocalTimeStartDate(new Date()));
+          }
         })
         .catch(() => {
           setPathValue(`settings/${userId}/`, { startDate: unixLocalTimeStartDate() }).then(() => true);
