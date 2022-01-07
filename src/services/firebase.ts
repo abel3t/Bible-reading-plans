@@ -12,8 +12,8 @@ import {
 import 'firebase/compat/auth';
 import 'firebase/compat/database';
 import 'firebase/compat/firestore';
-import { firebaseConfig } from '../utils/firebaseConfig';
-import { unixLocalTimeStartDate } from '../utils/datetime';
+import { firebaseConfig } from 'utils/firebaseConfig';
+import { getReceivedStreaks } from 'utils/shared';
 
 // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
@@ -27,25 +27,7 @@ export const signInWithGoogle = () => {
       .then(async (result) => {
         const userId = result.user.uid;
         const userImageUrl = result.user.photoURL;
-
-        const startOfDayUnix = unixLocalTimeStartDate();
-        const startOfYesterdayUnix = startOfDayUnix - 86400;
         const userInfo: any = await getPathValue(`users/${userId}`);
-        const yesterdayReceivedStreak: any = await getPathValue(`receivedStreaks/${userId}/${startOfDayUnix}`);
-        const todayReceivedStreak: any = await getPathValue(`receivedStreaks/${userId}/${startOfYesterdayUnix}`);
-
-        const receivedStreaks = {
-          [startOfYesterdayUnix]: yesterdayReceivedStreak || false,
-          [startOfDayUnix]: todayReceivedStreak || false
-        };
-
-        if (yesterdayReceivedStreak === null) {
-          setPathValue(`receivedStreaks/${userId}/${startOfYesterdayUnix}`, false).then(() => true);
-        }
-
-        if (todayReceivedStreak === null) {
-          await setPathValue(`receivedStreaks/${userId}/${startOfDayUnix}`, false).then(() => true);
-        }
 
         if (!userInfo) {
           setPathValue(`users/${userId}`, { streak: 0 }).then(() => true);
@@ -60,7 +42,7 @@ export const signInWithGoogle = () => {
             completedDate: {},
             ...(userInfo || {})
           },
-          receivedStreaks
+          receivedStreaks: await getReceivedStreaks(userId)
         };
       })
       .catch(error => {

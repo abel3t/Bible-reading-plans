@@ -9,16 +9,40 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import { getSettings, updateSettings } from 'slices/settings.slice';
 import { getPathValue, setPathValue } from '../services/firebase';
 import { unixLocalTimeStartDate } from '../utils/datetime';
+import { updateUserData } from '../slices/user-data.slice';
+import { getReceivedStreaks } from '../utils/shared';
 
 const HeaderSettings: React.FC = () => {
   const [open, setOpen] = React.useState(false);
-  const [startDate, setStartDate] = React.useState(unixLocalTimeStartDate(new Date()));
+  const [startDate, setStartDate] = React.useState(0);
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    const userId = localStorage.getItem('userId') || '';
+  const getUserData = async (userId: string) => {
+    const userData: any = await getPathValue(`users/${userId}`);
+    if (!userData) {
+      setPathValue(`users/${userId}`, { streak: 0 }).then(() => true);
+    } else {
+      const receivedStreaks: any = await getReceivedStreaks(userId);
+      const startOfYesterdayUnix = unixLocalTimeStartDate() - 86400;
 
+      if (!receivedStreaks?.[startOfYesterdayUnix]) {
+        dispatch(updateUserData({
+          ...userData,
+          streak: 0
+        }));
+
+        setPathValue(`users/${userId}`, {
+          ...userData,
+          streak: 0
+        }).then(() => true);
+      } else {
+        dispatch(updateUserData(userData));
+      }
+    }
+  };
+
+  const getUserSettings = async (userId: string) => {
     getPathValue(`settings/${userId}/`)
         .then(settings => {
           dispatch(updateSettings(settings));
@@ -26,7 +50,16 @@ const HeaderSettings: React.FC = () => {
         })
         .catch(() => {
           setPathValue(`settings/${userId}/`, { startDate: unixLocalTimeStartDate() }).then(() => true);
+          setStartDate(unixLocalTimeStartDate(new Date()));
         });
+  };
+
+  useEffect(() => {
+    const userId = localStorage.getItem('userId') || '';
+    if (userId) {
+      getUserSettings(userId).then(() => true);
+      getUserData(userId).then(() => true);
+    }
   }, []);
 
   const settings = useSelector(getSettings);
@@ -100,7 +133,8 @@ const HeaderSettings: React.FC = () => {
             </div>
 
             <div className="flex justify-end mt-5">
-              <Button variant="outlined" className="capitalize" color="primary" onClick={handleSave} disabled={!startDate}>
+              <Button variant="outlined" className="capitalize" color="primary" onClick={handleSave}
+                      disabled={!startDate}>
                 Save
               </Button>
             </div>

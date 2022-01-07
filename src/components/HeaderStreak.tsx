@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getUserData, updateReceivedStreaks } from 'slices/user-data.slice';
 import { getPathValue, setPathValue } from '../services/firebase';
 import { unixLocalTimeStartDate } from '../utils/datetime';
+import { getReceivedStreaks } from '../utils/shared';
 
 const HeaderStreak: React.FC = () => {
   const userData: any = useSelector(getUserData);
@@ -12,30 +13,11 @@ const HeaderStreak: React.FC = () => {
   const startOfDayUnix = unixLocalTimeStartDate();
   const startOfYesterdayUnix = startOfDayUnix - 86400;
 
-  const getReceivedStreaksData = async () => {
-    const userId = localStorage.getItem('userId') || '';
-
-    const todayReceivedStreak = await getPathValue(`receivedStreaks/${userId}/${startOfDayUnix}`);
-    const yesterdayReceivedStreak = await getPathValue(`receivedStreaks/${userId}/${startOfYesterdayUnix}`);
-
-    if (yesterdayReceivedStreak === null) {
-      setPathValue(`receivedStreaks/${userId}/${startOfYesterdayUnix}`, false).then(() => true);
-    }
-
-    if (todayReceivedStreak === null) {
-      await setPathValue(`receivedStreaks/${userId}/${startOfDayUnix}`, false).then(() => true);
-    }
-
-    return {
-      todayReceivedStreak: todayReceivedStreak ,
-      yesterdayReceivedStreak:yesterdayReceivedStreak
-    }
-  }
-
   useEffect(() => {
     const startOfDayUnix = unixLocalTimeStartDate();
+    const userId = localStorage.getItem('userId') || '';
 
-    const {todayReceivedStreak, yesterdayReceivedStreak}: any = getReceivedStreaksData().then(data => data);
+    const {todayReceivedStreak, yesterdayReceivedStreak}: any = getReceivedStreaks(userId).then(data => data);
     const receivedStreaks = {
       [startOfYesterdayUnix]: yesterdayReceivedStreak || false,
       [startOfDayUnix]: todayReceivedStreak || false

@@ -6,7 +6,7 @@ import Image from 'next/image';
 
 import { updateUserData } from 'slices/user-data.slice';
 import { unixLocalTimeStartDate } from 'utils/datetime';
-import { signInWithGoogle } from 'services/firebase';
+import { setPathValue, signInWithGoogle } from 'services/firebase';
 
 const Auth: React.FC = () => {
   const [user, setUser]: [any, Function] = useState({});
@@ -39,6 +39,10 @@ const Auth: React.FC = () => {
         ...userData,
         streak: 0
       }));
+      setPathValue(`users/${userId}`, {
+        ...userData,
+        streak: 0
+      }).then(() => true);
     } else {
       dispatch(updateUserData(userData));
     }
