@@ -55,11 +55,9 @@ export default function ReadingPart({ id, title, content }: IReadingPartProps) {
       receivedStreak
     };
 
-
-
     const userId: string = localStorage.getItem('userId') || '';
 
-    await setPathValue(userId, '', newUserData);
+    await setPathValue(`users/${userId}`, newUserData);
 
     dispatch(updateUserData(newUserData));
   };

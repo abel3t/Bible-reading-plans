@@ -16,6 +16,7 @@ import {
 } from '../constant';
 import { getSettings } from 'slices/settings.slice';
 import ReadingPart from 'components/ReadingPart';
+import { unixLocalTimeStartDate, unixTime } from 'utils/datetime';
 
 const Home: NextPage = () => {
   const [warn, setWarn] = React.useState(false);
@@ -24,8 +25,8 @@ const Home: NextPage = () => {
   const settings: any = useSelector(getSettings);
 
   useEffect(() => {
-    const today = new Date();
-    const startDate = new Date(settings.startDate);
+    const today = unixTime(new Date());
+    const startDate = unixLocalTimeStartDate(new Date(settings.startDate));
 
     setWarn(today < startDate);
     setDay(differenceInDays(new Date(), new Date(settings.startDate)));

@@ -13,8 +13,6 @@ import 'firebase/compat/auth';
 import 'firebase/compat/database';
 import 'firebase/compat/firestore';
 import { firebaseConfig } from '../utils/firebaseConfig';
-import { unixLocalTimeStartDate } from '../utils/datetime';
-import { updateUserData } from '../slices/user-data.slice';
 
 // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
@@ -27,9 +25,9 @@ export const signInWithGoogle = () => {
   return signInWithPopup(auth, new GoogleAuthProvider(), browserPopupRedirectResolver)
       .then(async (result) => {
         const userId = result.user.uid;
-        const userInfo: any = await getPathValue(userId);
+        const userInfo: any = await getPathValue(`users/${userId}`);
         if (!userInfo) {
-          await setPathValue(userId, '', {
+          await setPathValue(`users/${userId}`, {
             streak: 0
           });
         }
@@ -52,8 +50,8 @@ export const signInWithGoogle = () => {
 const database = getDatabase(firebaseApp);
 const dbRef = ref(database);
 
-export const getPathValue = (userId: string, path?: string) => {
-  return get(child(dbRef, `users/${userId}/${path || ''}`)).then((snapshot) => {
+export const getPathValue = (path: string) => {
+  return get(child(dbRef, path)).then((snapshot) => {
     if (snapshot.exists()) {
       return snapshot.val();
     } else {
@@ -62,8 +60,8 @@ export const getPathValue = (userId: string, path?: string) => {
   }).catch((error) => error);
 };
 
-export const setPathValue = (userId: string, path: string, value: number | string | Record<string, any>) => {
-  return set(ref(database, `users/${userId}/${path || ''}`), value)
+export const setPathValue = (path: string, value: number | string | Record<string, any>) => {
+  return set(ref(database, path), value)
       .then(() => true)
       .catch((error) => error);
 };

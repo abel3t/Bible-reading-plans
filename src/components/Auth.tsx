@@ -1,9 +1,12 @@
-import { Button } from '@mui/material';
-import { signInWithGoogle } from '../services/firebase';
 import React from 'react';
+import { Button } from '@mui/material';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useDispatch } from 'react-redux';
-import { updateUserData } from '../slices/user-data.slice';
-import { unixLocalTimeStartDate } from '../utils/datetime';
+
+import { updateUserData } from 'slices/user-data.slice';
+import { unixLocalTimeStartDate } from 'utils/datetime';
+import { signInWithGoogle } from 'services/firebase';
+
 
 const Auth: React.FC = () => {
   const dispatch = useDispatch();
@@ -26,8 +29,9 @@ const Auth: React.FC = () => {
   };
   return (
       <>
-        <Button className="text-white" onClick={() => handleSignWithGoogle()}>
-          <i className="fab fa-google"/><span>Sign in</span>
+        <Button className="text-white text-sm capitalize" onClick={() => handleSignWithGoogle()}>
+          <AccountCircleIcon />
+          <span>Sign in</span>
         </Button>
       </>
   );

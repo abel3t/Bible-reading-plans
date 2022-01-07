@@ -7,20 +7,24 @@ import enLocale from 'date-fns/locale/en-US';
 import DatePicker from '@mui/lab/DatePicker';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { getSettings, updateSettings } from 'slices/settings.slice';
+import { getPathValue, setPathValue } from '../services/firebase';
+import { unixLocalTimeStartDate } from '../utils/datetime';
 
 const HeaderSettings: React.FC = () => {
   const [open, setOpen] = React.useState(false);
   const [startDate, setStartDate] = React.useState<Date | null>(new Date());
 
   const dispatch = useDispatch();
+  const userId = localStorage.getItem('userId') || '';
 
   useEffect(() => {
-    const _settings: any = JSON.parse(localStorage.getItem('settings') || 'null');
+    const _settings: any = getPathValue(`settings/${userId}/`);
+
     if (_settings) {
       dispatch(updateSettings(_settings));
       setStartDate(new Date(_settings.startDate));
     } else {
-      localStorage.setItem('settings', JSON.stringify({ startDate: new Date() }));
+      setPathValue(`settings/${userId}/`, { startDate: unixLocalTimeStartDate() }).then(() => true);
     }
   }, []);
 
@@ -36,7 +40,7 @@ const HeaderSettings: React.FC = () => {
 
     dispatch(updateSettings(newSettings));
 
-    localStorage.setItem('settings', JSON.stringify(newSettings));
+    setPathValue(`settings/${userId}`, newSettings).then(() => true);
 
     setOpen(false);
   };

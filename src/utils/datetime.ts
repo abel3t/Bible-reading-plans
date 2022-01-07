@@ -1,19 +1,21 @@
 import { getUnixTime, startOfDay } from 'date-fns';
 
-export function unixTime(): number {
-  const dateTime = new Date();
-  const seconds = dateTime.getSeconds();
-  const minutes = dateTime.getMinutes();
-  const hours = dateTime.getHours();
-  const date = dateTime.getDate();
-  const month = dateTime.getMonth();
-  const year = dateTime.getFullYear();
-
-  return getUnixTime(Date.UTC(year, month, date, hours, minutes, seconds));
+export function unixTime(date?: Date): number {
+  const dateTime = date || new Date();
+  return getUnixTime(
+      Date.UTC(
+          dateTime.getFullYear(),
+          dateTime.getMonth(),
+          dateTime.getDate(),
+          dateTime.getHours(),
+          dateTime.getMinutes(),
+          dateTime.getSeconds()
+      )
+  );
 }
 
-export function unixStartDate(): number {
-  const dateTime = new Date();
+export function unixStartDate(date?: Date): number {
+  const dateTime = date || new Date();
   const day = dateTime.getDate();
   const month = dateTime.getMonth();
   const year = dateTime.getFullYear();
@@ -21,6 +23,6 @@ export function unixStartDate(): number {
   return getUnixTime(Date.UTC(year, month, day, 0, 0, 0));
 }
 
-export function unixLocalTimeStartDate(): number {
-  return getUnixTime(startOfDay(new Date()));
+export function unixLocalTimeStartDate(date?: Date): number {
+  return getUnixTime(startOfDay(date || new Date()));
 }
