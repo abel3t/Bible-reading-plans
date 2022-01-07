@@ -12,17 +12,18 @@ import { unixLocalTimeStartDate } from '../utils/datetime';
 
 const HeaderSettings: React.FC = () => {
   const [open, setOpen] = React.useState(false);
-  const [startDate, setStartDate] = React.useState<Date | null>(new Date());
+  const [startDate, setStartDate] = React.useState(unixLocalTimeStartDate(new Date()));
 
   const dispatch = useDispatch();
-  const userId = localStorage.getItem('userId') || '';
 
   useEffect(() => {
+    const userId = localStorage.getItem('userId') || '';
+
     const _settings: any = getPathValue(`settings/${userId}/`);
 
     if (_settings) {
       dispatch(updateSettings(_settings));
-      setStartDate(new Date(_settings.startDate));
+      setStartDate(_settings.startDate);
     } else {
       setPathValue(`settings/${userId}/`, { startDate: unixLocalTimeStartDate() }).then(() => true);
     }
@@ -39,6 +40,8 @@ const HeaderSettings: React.FC = () => {
     };
 
     dispatch(updateSettings(newSettings));
+
+    const userId = localStorage.getItem('userId') || '';
 
     setPathValue(`settings/${userId}`, newSettings).then(() => true);
 
@@ -82,7 +85,7 @@ const HeaderSettings: React.FC = () => {
 
                   <DatePicker
                       inputFormat="MMMM dd, yyyy"
-                      value={startDate}
+                      value={new Date(startDate * 1000)}
                       label="Start Date"
                       onChange={(newDate: any) => setStartDate(newDate)}
                       renderInput={(params: any) => <TextField {...params} />}

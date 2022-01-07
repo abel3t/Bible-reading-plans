@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from 'settings/store';
+import { unixStartDate } from '../utils/datetime';
 
 export type SettingsState = {
   settings: {
@@ -9,7 +10,7 @@ export type SettingsState = {
 
 const initialState: SettingsState = {
   settings: {
-    startDate: new Date()
+    startDate: unixStartDate()
   }
 };
 
