@@ -2,21 +2,18 @@ import React, { useEffect } from 'react';
 import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { getUserData, updateReceivedStreaks } from 'slices/user-data.slice';
+import { getReceivedStreaks, getUserData, updateReceivedStreaks } from 'slices/user-data.slice';
 import { unixLocalTimeStartDate } from 'utils/datetime';
-import { getReceivedStreaks } from 'utils/shared';
 
 const HeaderStreak: React.FC = () => {
   const userData: any = useSelector(getUserData);
   const dispatch = useDispatch();
   const startOfDayUnix = unixLocalTimeStartDate();
   const startOfYesterdayUnix = startOfDayUnix - 86400;
+  const { todayReceivedStreak, yesterdayReceivedStreak }: any = useSelector(getReceivedStreaks);
 
   useEffect(() => {
     const startOfDayUnix = unixLocalTimeStartDate();
-    const userId = localStorage.getItem('userId') || '';
-
-    const {todayReceivedStreak, yesterdayReceivedStreak}: any = getReceivedStreaks(userId).then(data => data);
     const receivedStreaks = {
       [startOfYesterdayUnix]: yesterdayReceivedStreak || false,
       [startOfDayUnix]: todayReceivedStreak || false

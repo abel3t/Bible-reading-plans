@@ -7,9 +7,9 @@ import enLocale from 'date-fns/locale/en-US';
 import DatePicker from '@mui/lab/DatePicker';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { getSettings, updateSettings } from 'slices/settings.slice';
-import { getPathValue, setPathValue } from '../services/firebase';
-import { unixLocalTimeStartDate } from '../utils/datetime';
-import { getIsAuthenticated, updateUserData } from '../slices/user-data.slice';
+import { getPathValue, setPathValue } from 'services/firebase';
+import { unixLocalTimeStartDate } from 'utils/datetime';
+import { getIsAuthenticated, updateReceivedStreaks, updateUserData } from 'slices/user-data.slice';
 import { getReceivedStreaks } from '../utils/shared';
 
 const HeaderSettings: React.FC = () => {
@@ -39,6 +39,8 @@ const HeaderSettings: React.FC = () => {
       } else {
         dispatch(updateUserData(userData));
       }
+
+      dispatch(updateReceivedStreaks(receivedStreaks));
     }
   };
 
