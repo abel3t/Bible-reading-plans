@@ -55,7 +55,7 @@ const Auth: React.FC = () => {
             (!user.userId || !user.userImageUrl) &&
             <Button className="text-white text-sm capitalize sm:ml-1 md:ml-2" onClick={() => handleSignWithGoogle()}>
               <AccountCircleIcon/>
-              <span>Sign in</span>
+              <span>Login</span>
             </Button>
         }
       </div>
