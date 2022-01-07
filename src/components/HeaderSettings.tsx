@@ -22,7 +22,6 @@ const HeaderSettings: React.FC = () => {
     getPathValue(`settings/${userId}/`)
         .then(settings => {
           dispatch(updateSettings(settings));
-          console.log(settings)
           setStartDate(settings.startDate);
         })
         .catch(() => {

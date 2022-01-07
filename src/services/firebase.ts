@@ -33,12 +33,12 @@ export const signInWithGoogle = () => {
         const todayReceivedStreak: any = await getPathValue(`receivedStreaks/${userId}/${startOfYesterdayUnix}`);
 
         const receivedStreaks = {
-          [startOfYesterdayUnix]: yesterdayReceivedStreak,
-          [startOfDayUnix]: todayReceivedStreak
+          [startOfYesterdayUnix]: yesterdayReceivedStreak || false,
+          [startOfDayUnix]: todayReceivedStreak || false
         };
 
         if (yesterdayReceivedStreak === null) {
-          setPathValue(`receivedStreaks/${userId}/${startOfDayUnix}`, false).then(() => true);
+          setPathValue(`receivedStreaks/${userId}/${startOfYesterdayUnix}`, false).then(() => true);
         }
 
         if (todayReceivedStreak === null) {

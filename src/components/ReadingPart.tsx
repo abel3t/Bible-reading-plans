@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getReceivedStreaks, getUserData, updateReceivedStreaks, updateUserData } from 'slices/user-data.slice';
 import { unixLocalTimeStartDate } from 'utils/datetime';
 import { defaultPlanParts } from '../constant';
-import { setPathValue } from '../services/firebase';
+import { getPathValue, setPathValue } from '../services/firebase';
 
 interface IReadingPartProps {
   id: string,
@@ -28,21 +28,22 @@ export default function ReadingPart({ id, title, content }: IReadingPartProps) {
       ...todayCompletedParts,
       [id]: !!event.target?.checked
     };
+    const yesterdayReceivedStreak = receivedStreaks[startOfYesterdayUnix] || false;
 
     const completedParts = Object.values(newCompletedParts).filter((isCompleted: any) => !!isCompleted);
     let streak = userData.streak;
-    let newReceivedStreaks: Record<string, boolean> = {};
+    let newReceivedStreaks: Record<string, boolean> = { ...receivedStreaks };
 
     if (completedParts.length === defaultPlanParts.length && !receivedStreaks[startOfDayUnix]) {
       ++streak;
       newReceivedStreaks = {
-        [startOfYesterdayUnix]: receivedStreaks[startOfYesterdayUnix] || false,
+        [startOfYesterdayUnix]: yesterdayReceivedStreak,
         [startOfDayUnix]: true
       };
     } else if (receivedStreaks[startOfDayUnix]) {
       --streak;
       newReceivedStreaks = {
-        [startOfYesterdayUnix]: receivedStreaks[startOfYesterdayUnix] || false,
+        [startOfYesterdayUnix]: yesterdayReceivedStreak,
         [startOfDayUnix]: false
       };
     }
@@ -62,7 +63,7 @@ export default function ReadingPart({ id, title, content }: IReadingPartProps) {
     await Promise.all([
       setPathValue(`users/${userId}`, newUserData),
       setPathValue(`receivedStreaks/${userId}/${startOfDayUnix}`, newReceivedStreaks[startOfDayUnix]),
-      setPathValue(`receivedStreaks/${userId}/${startOfDayUnix}`, newReceivedStreaks[startOfYesterdayUnix])
+      setPathValue(`receivedStreaks/${userId}/${startOfYesterdayUnix}`, newReceivedStreaks[startOfYesterdayUnix])
     ]);
 
     dispatch(updateReceivedStreaks(newReceivedStreaks));
