@@ -53,7 +53,8 @@ const Auth: React.FC = () => {
         }
         {
             (!user.userId || !user.userImageUrl) &&
-            <Button className="text-white text-sm capitalize sm:ml-1 md:ml-2" onClick={() => handleSignWithGoogle()}>
+            <Button variant="contained" className="text-white text-sm capitalize font-normal"
+                    style={{ backgroundColor: '#6C97B5' }} onClick={() => handleSignWithGoogle()}>
               <AccountCircleIcon/>
               <span>Login</span>
             </Button>
