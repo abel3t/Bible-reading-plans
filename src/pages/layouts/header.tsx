@@ -8,7 +8,7 @@ const Header: React.FC = () => {
       <div className="flex content-center items-center xs:3/4 md:w-2/3 lg:w-1/2 border-solid border-b-2 p-2"
            style={{ margin: '0 auto', borderColor: '#3E6F92' }}>
         <div className="text-md md:text-2xl">DAILY BIBLE READING</div>
-        <div className="grow flex justify-end">
+        <div className="grow flex justify-end items-center content-center">
           <HeaderStreak />
           <HeaderSettings />
           <Auth />

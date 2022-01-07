@@ -25,9 +25,16 @@ const auth = initializeAuth(firebaseApp, {
 export const signInWithGoogle = () => {
   return signInWithPopup(auth, new GoogleAuthProvider(), browserPopupRedirectResolver)
       .then(async (result) => {
+        const userId = result.user.uid;
+        const userImageUrl = result.user.photoURL;
+
+        console.log({
+          userId,
+          userImageUrl
+        })
+
         const startOfDayUnix = unixLocalTimeStartDate();
         const startOfYesterdayUnix = startOfDayUnix - 86400;
-        const userId = result.user.uid;
         const userInfo: any = await getPathValue(`users/${userId}`);
         const yesterdayReceivedStreak: any = await getPathValue(`receivedStreaks/${userId}/${startOfDayUnix}`);
         const todayReceivedStreak: any = await getPathValue(`receivedStreaks/${userId}/${startOfYesterdayUnix}`);
@@ -51,6 +58,7 @@ export const signInWithGoogle = () => {
 
         return {
           userId,
+          userImageUrl,
           userData: {
             streak: 0,
             completedParts: {},
