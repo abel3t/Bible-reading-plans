@@ -3,9 +3,8 @@ import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { getUserData, updateReceivedStreaks } from 'slices/user-data.slice';
-import { getPathValue, setPathValue } from '../services/firebase';
-import { unixLocalTimeStartDate } from '../utils/datetime';
-import { getReceivedStreaks } from '../utils/shared';
+import { unixLocalTimeStartDate } from 'utils/datetime';
+import { getReceivedStreaks } from 'utils/shared';
 
 const HeaderStreak: React.FC = () => {
   const userData: any = useSelector(getUserData);

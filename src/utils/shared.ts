@@ -12,8 +12,8 @@ export async function getReceivedStreaks(userId: string) {
     };
   }
 
-  const yesterdayReceivedStreak: any = await getPathValue(`receivedStreaks/${userId}/${startOfDayUnix}`);
-  const todayReceivedStreak: any = await getPathValue(`receivedStreaks/${userId}/${startOfYesterdayUnix}`);
+  const yesterdayReceivedStreak: any = await getPathValue(`receivedStreaks/${userId}/${startOfYesterdayUnix}`);
+  const todayReceivedStreak: any = await getPathValue(`receivedStreaks/${userId}/${startOfDayUnix}`);
 
   const receivedStreaks = {
     [startOfYesterdayUnix]: yesterdayReceivedStreak || false,
