@@ -22,10 +22,13 @@ export const settingsSlice = createSlice({
       state.settings = {
         ...action.payload
       };
+    },
+    resetSettings: (state) => {
+      state = initialState;
     }
   }
 });
 
-export const { updateSettings } = settingsSlice.actions;
+export const { updateSettings, resetSettings } = settingsSlice.actions;
 export const getSettings = (state: RootState) => state.settings.settings;
 export default settingsSlice.reducer;

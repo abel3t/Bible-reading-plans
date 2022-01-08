@@ -7,7 +7,7 @@ import {
   indexedDBLocalPersistence,
   browserLocalPersistence,
   initializeAuth,
-  GoogleAuthProvider
+  GoogleAuthProvider, signOut
 } from 'firebase/auth';
 import 'firebase/compat/auth';
 import 'firebase/compat/database';
@@ -27,6 +27,7 @@ export const signInWithGoogle = () => {
       .then(async (result) => {
         const userId = result.user.uid;
         const userImageUrl = result.user.photoURL;
+        const displayName = result.user.displayName;
         const userInfo: any = await getPathValue(`users/${userId}`);
 
         if (!userInfo) {
@@ -36,6 +37,7 @@ export const signInWithGoogle = () => {
         return {
           userId,
           userImageUrl,
+          displayName,
           userData: {
             streak: 0,
             completedParts: {},
@@ -50,6 +52,10 @@ export const signInWithGoogle = () => {
         return {};
       });
 };
+
+export const signOutGoogle = () => {
+  return signOut(auth);
+}
 
 // region Database Realtime
 const database = getDatabase(firebaseApp);

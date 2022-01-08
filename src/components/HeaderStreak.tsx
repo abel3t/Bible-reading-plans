@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { getReceivedStreaks, getUserData, updateReceivedStreaks } from 'slices/user-data.slice';
+import { getIsAuthenticated, getReceivedStreaks, getUserData, updateReceivedStreaks } from 'slices/user-data.slice';
 import { unixLocalTimeStartDate } from 'utils/datetime';
 
 const HeaderStreak: React.FC = () => {
@@ -12,7 +12,9 @@ const HeaderStreak: React.FC = () => {
   const startOfYesterdayUnix = startOfDayUnix - 86400;
   const { todayReceivedStreak, yesterdayReceivedStreak }: any = useSelector(getReceivedStreaks);
 
+  const isAuthenticated = useSelector(getIsAuthenticated);
   useEffect(() => {
+    console.log('load ne2')
     const startOfDayUnix = unixLocalTimeStartDate();
     const receivedStreaks = {
       [startOfYesterdayUnix]: yesterdayReceivedStreak || false,
@@ -20,7 +22,7 @@ const HeaderStreak: React.FC = () => {
     };
 
     dispatch(updateReceivedStreaks(receivedStreaks));
-  }, []);
+  }, [isAuthenticated]);
 
   return (
       <div className="flex items-center justify-center mr-5" style={{ color: userData.streak ? '#F19B38' : '#eee' }}>

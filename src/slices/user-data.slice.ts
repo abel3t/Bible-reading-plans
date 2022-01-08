@@ -37,11 +37,14 @@ export const UserDateSlice = createSlice({
     },
     updateIsAuthenticated:  (state, action: PayloadAction<any>) => {
       state.isAuthenticated = action.payload;
+    },
+    resetUserData:  (state) => {
+      state = initialState;
     }
   }
 });
 
-export const { updateUserData, updateReceivedStreaks, updateIsAuthenticated } = UserDateSlice.actions;
+export const { updateUserData, updateReceivedStreaks, updateIsAuthenticated, resetUserData } = UserDateSlice.actions;
 export const getUserData = (state: RootState) => state.userData.userData;
 export const getReceivedStreaks = (state: RootState) => state.userData.receivedStreaks;
 export const getIsAuthenticated = (state: RootState) => state.userData.isAuthenticated;
