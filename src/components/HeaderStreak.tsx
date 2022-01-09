@@ -14,7 +14,6 @@ const HeaderStreak: React.FC = () => {
 
   const isAuthenticated = useSelector(getIsAuthenticated);
   useEffect(() => {
-    console.log('load ne2')
     const startOfDayUnix = unixLocalTimeStartDate();
     const receivedStreaks = {
       [startOfYesterdayUnix]: yesterdayReceivedStreak || false,

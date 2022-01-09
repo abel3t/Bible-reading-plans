@@ -11,7 +11,6 @@ import { unixLocalTimeStartDate } from 'utils/datetime';
 import { setPathValue, signInWithGoogle, signOutGoogle } from 'services/firebase';
 import { resetSettings } from '../slices/settings.slice';
 
-
 const Auth: React.FC = () => {
   const [user, setUser]: [any, Function] = useState({});
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -88,7 +87,7 @@ const Auth: React.FC = () => {
     dispatch(resetSettings());
     dispatch(resetUserData());
     localStorage.clear();
-  }
+  };
 
   const style = {
     position: 'absolute' as 'absolute',
@@ -100,7 +99,7 @@ const Auth: React.FC = () => {
     borderRadius: '10px',
     boxShadow: 24,
     pt: 2,
-    px: 4,
+    px: 4
   };
 
   return (
@@ -112,15 +111,17 @@ const Auth: React.FC = () => {
             onClose={handleClose}
             anchorOrigin={{
               vertical: 'bottom',
-              horizontal: 'left',
+              horizontal: 'left'
             }}
         >
           <div className="py-1">
-            <p className="py-1 px-4 text-sm cursor-pointer bg-white hover:bg-gray-200 active:hover:bg-gray-200focus:outline-none" onClick={handleModalOpen}>
-              <PersonIcon /><span className="ml-1">Profile</span>
+            <p className="py-1 px-4 text-sm cursor-pointer bg-white hover:bg-gray-200 active:hover:bg-gray-200focus:outline-none"
+               onClick={handleModalOpen}>
+              <PersonIcon/><span className="ml-1">Profile</span>
             </p>
-            <p className="py-1 px-5 text-sm cursor-pointer bg-white hover:bg-gray-200 active:hover:bg-gray-200 focus:outline-none" onClick={onHandleLogout}>
-              <LogoutIcon /><span className="ml-1">Logout</span>
+            <p className="py-1 px-5 text-sm cursor-pointer bg-white hover:bg-gray-200 active:hover:bg-gray-200 focus:outline-none"
+               onClick={onHandleLogout}>
+              <LogoutIcon/><span className="ml-1">Logout</span>
             </p>
           </div>
         </Popover>
@@ -132,19 +133,20 @@ const Auth: React.FC = () => {
             aria-describedby="modal-description"
         >
           <Box sx={style}>
-              <div className="text-gray-400 uppercase text-sm font-bold">Profile</div>
-              <div className="py-4 flex items-center">
-                <div>
-                  <Image className="rounded-full" src={user.userImageUrl} alt="avt" width="70" height="70"/>
-                </div>
-                <p className="sm:ml-4 md:ml-6 lg:ml-10 text-xl font-bold">{user.displayName || 'Unknown'}</p>
+            <div className="text-gray-400 uppercase text-sm font-bold">Profile</div>
+            <div className="py-4 flex items-center">
+              <div>
+                <Image className="rounded-full" src={user.userImageUrl} alt="avt" width="70" height="70"/>
               </div>
+              <p className="sm:ml-4 md:ml-6 lg:ml-10 text-xl font-bold">{user.displayName || 'Unknown'}</p>
+            </div>
           </Box>
         </Modal>
 
         {
             user.userId && user.userImageUrl &&
-            <Image className="cursor-pointer" onClick={handleClick} src={user.userImageUrl} alt="avt" width="30" height="30"/>
+            <Image className="cursor-pointer" onClick={handleClick} src={user.userImageUrl} alt="avt" width="30"
+                   height="30"/>
         }
         {
             (!user.userId || !user.userImageUrl) &&

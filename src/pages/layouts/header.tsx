@@ -9,9 +9,9 @@ const Header: React.FC = () => {
            style={{ margin: '0 auto', borderColor: '#3E6F92' }}>
         <div className="text-md md:text-2xl">DAILY BIBLE READING</div>
         <div className="grow flex justify-end items-center content-center">
-          <HeaderStreak />
-          <HeaderSettings />
-          <Auth />
+          <HeaderStreak/>
+          <HeaderSettings/>
+          <Auth/>
         </div>
       </div>
   );

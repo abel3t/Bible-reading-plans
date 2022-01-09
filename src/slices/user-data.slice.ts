@@ -35,10 +35,10 @@ export const UserDateSlice = createSlice({
         ...action.payload
       };
     },
-    updateIsAuthenticated:  (state, action: PayloadAction<any>) => {
+    updateIsAuthenticated: (state, action: PayloadAction<any>) => {
       state.isAuthenticated = action.payload;
     },
-    resetUserData:  (state) => {
+    resetUserData: (state) => {
       state = initialState;
     }
   }
