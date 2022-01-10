@@ -86,6 +86,7 @@ const Auth: React.FC = () => {
     await signOutGoogle();
     dispatch(resetSettings());
     dispatch(resetUserData());
+    location.reload();
     localStorage.clear();
   };
 
