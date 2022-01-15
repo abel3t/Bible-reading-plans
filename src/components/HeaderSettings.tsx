@@ -19,7 +19,9 @@ const HeaderSettings: React.FC = () => {
   const dispatch = useDispatch();
 
   const getUserData = async (userId: string) => {
-    const userData: any = await getPathValue(`users/${userId}`);
+    const userData: any = await getPathValue(`users/${userId}`)
+        .catch(error => console.log('Error', error));
+
     if (!userData) {
       setPathValue(`users/${userId}`, { streak: 0 }).then(() => true);
     } else {
