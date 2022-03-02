@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Backdrop, Box, Button, Modal, Skeleton, TextField } from '@mui/material';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
@@ -6,73 +6,38 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import enLocale from 'date-fns/locale/en-US';
 import DatePicker from '@mui/lab/DatePicker';
 import SettingsIcon from '@mui/icons-material/Settings';
+import SyncIcon from '@mui/icons-material/Sync';
 import { getSettings, updateSettings } from 'slices/settings.slice';
-import { getPathValue, setPathValue } from 'services/firebase';
+import { setPathValue } from 'services/firebase';
 import { unixLocalTimeStartDate } from 'utils/datetime';
-import { getIsAuthenticated, updateReceivedStreaks, updateUserData } from 'slices/user-data.slice';
-import { getReceivedStreaks } from '../utils/shared';
+import { getIsAuthenticated } from 'slices/user-data.slice';
+import Image from 'next/image';
 
 const HeaderSettings: React.FC = () => {
   const [open, setOpen] = React.useState(false);
   const [startDate, setStartDate] = React.useState(0);
+  const [user, setUser]: [any, Function] = useState({});
+  const [isSync, setIsSync]: [any, Function] = useState(false);
 
   const dispatch = useDispatch();
-
-  const getUserData = async (userId: string) => {
-    const userData: any = await getPathValue(`users/${userId}`)
-        .catch(error => console.log('Error', error));
-
-    if (!userData) {
-      setPathValue(`users/${userId}`, { streak: 0 }).then(() => true);
-    } else {
-      const receivedStreaks: any = await getReceivedStreaks(userId);
-      const startOfYesterdayUnix = unixLocalTimeStartDate() - 86400;
-
-      if (!receivedStreaks?.[startOfYesterdayUnix]) {
-        dispatch(updateUserData({
-          ...userData,
-          streak: 0
-        }));
-
-        setPathValue(`users/${userId}`, {
-          ...userData,
-          streak: 0
-        }).then(() => true);
-      } else {
-        dispatch(updateUserData(userData));
-      }
-
-      dispatch(updateReceivedStreaks(receivedStreaks));
-    }
-  };
-
-  const getUserSettings = async (userId: string) => {
-    getPathValue(`settings/${userId}/`)
-        .then(settings => {
-          if (settings.startDate) {
-            dispatch(updateSettings(settings));
-            setStartDate(settings.startDate);
-          } else {
-            dispatch(updateSettings({ startDate: unixLocalTimeStartDate(new Date()) }));
-            setPathValue(`settings/${userId}/`, { startDate: unixLocalTimeStartDate() }).then(() => true);
-            setStartDate(unixLocalTimeStartDate(new Date()));
-          }
-        })
-        .catch(() => {
-          setPathValue(`settings/${userId}/`, { startDate: unixLocalTimeStartDate() }).then(() => true);
-          setStartDate(unixLocalTimeStartDate(new Date()));
-        });
-  };
 
   const settings = useSelector(getSettings);
   const isAuthenticated: boolean = useSelector(getIsAuthenticated);
 
   useEffect(() => {
-    const userId = localStorage.getItem('userId') || '';
-    if (userId) {
-      getUserSettings(userId).then(() => true);
-      getUserData(userId).then(() => true);
+    const userId = localStorage.getItem('userId');
+    const userImageUrl = localStorage.getItem('userImageUrl');
+    const displayName = localStorage.getItem('displayName');
+    const settings = JSON.parse(localStorage.getItem('settings') || 'null');
+    if (settings?.startDate) {
+      setStartDate(settings.startDate);
     }
+
+    setUser({
+      userId,
+      userImageUrl,
+      displayName
+    });
   }, [isAuthenticated]);
 
   const handleOpen = () => setOpen(true);
@@ -84,12 +49,18 @@ const HeaderSettings: React.FC = () => {
     };
 
     dispatch(updateSettings(newSettings));
+    localStorage.setItem('settings', JSON.stringify(newSettings));
 
     const userId = localStorage.getItem('userId') || '';
 
     setPathValue(`settings/${userId}`, newSettings).then(() => true);
 
     setOpen(false);
+  };
+  const handleSyncData = () => {
+    setIsSync(true);
+
+    setTimeout(() => setIsSync(false), 4000);
   };
 
   const style = {
@@ -122,6 +93,20 @@ const HeaderSettings: React.FC = () => {
             <div className="font-bold text-lg mb-2 py-2" style={{ borderBottom: 'solid 1px #ccc' }}>
               Reading Settings
             </div>
+
+            <div className="flex justify-between items-center cursor-pointer" onClick={handleSyncData}>
+              <div className="flex">
+                {
+                  user?.userImageUrl && <Image className={`rounded-full`} src={user.userImageUrl} alt="avt" width="60" height="60"/>
+                }
+                <div className="ml-6">
+                  <div className="text-lg font-bold">{user?.displayName || ''}</div>
+                  <div className="text-md">time</div>
+                </div>
+              </div>
+              <SyncIcon className={`${isSync ? 'rotated-image' : ''}`}/>
+            </div>
+
             <div className="py-2 flex justify-between items-center" style={{ borderBottom: 'solid 1px #ccc' }}>
               <div className="font-bold">Start Date</div>
               {

@@ -1,1 +1,5 @@
-
+.rotated-image {
+    -webkit-transform: rotate(2160deg);
+    transform: rotate(2160deg);
+    transition: transform 6s;
+}

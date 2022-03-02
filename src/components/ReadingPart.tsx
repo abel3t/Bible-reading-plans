@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getReceivedStreaks, getUserData, updateReceivedStreaks, updateUserData } from 'slices/user-data.slice';
 import { unixLocalTimeStartDate } from 'utils/datetime';
 import { defaultPlanParts } from '../constant';
-import { setPathValue } from '../services/firebase';
 
 interface IReadingPartProps {
   id: string,
@@ -58,13 +57,8 @@ export default function ReadingPart({ id, title, content }: IReadingPartProps) {
       streak
     };
 
-    const userId: string = localStorage.getItem('userId') || '';
-
-    await Promise.all([
-      setPathValue(`users/${userId}`, newUserData),
-      setPathValue(`receivedStreaks/${userId}/${startOfDayUnix}`, newReceivedStreaks[startOfDayUnix]),
-      setPathValue(`receivedStreaks/${userId}/${startOfYesterdayUnix}`, newReceivedStreaks[startOfYesterdayUnix])
-    ]);
+    localStorage.setItem('newReceivedStreaks', JSON.stringify(newReceivedStreaks));
+    localStorage.setItem('userData', JSON.stringify(newUserData));
 
     dispatch(updateReceivedStreaks(newReceivedStreaks));
     dispatch(updateUserData(newUserData));
