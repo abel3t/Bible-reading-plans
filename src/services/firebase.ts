@@ -13,7 +13,6 @@ import 'firebase/compat/auth';
 import 'firebase/compat/database';
 import 'firebase/compat/firestore';
 import { firebaseConfig } from 'utils/firebaseConfig';
-import { getReceivedStreaks } from 'utils/shared';
 
 // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
@@ -28,7 +27,11 @@ export const signInWithGoogle = () => {
         const userId = result.user.uid;
         const userImageUrl = result.user.photoURL;
         const displayName = result.user.displayName;
-        const userInfo: any = await getPathValue(`users/${userId}`);
+        const [userInfo, settings, receivedStreaks] = await Promise.all([
+          getPathValue(`users/${userId}`),
+          getPathValue(`settings/${userId}`),
+          getPathValue(`receivedStreaks/${userId}`)
+        ]);
 
         if (!userInfo) {
           setPathValue(`users/${userId}`, { streak: 0 }).then(() => true);
@@ -44,7 +47,8 @@ export const signInWithGoogle = () => {
             completedDate: {},
             ...(userInfo || {})
           },
-          receivedStreaks: await getReceivedStreaks(userId)
+          settings,
+          receivedStreaks
         };
       })
       .catch(error => {
@@ -55,7 +59,7 @@ export const signInWithGoogle = () => {
 
 export const signOutGoogle = () => {
   return signOut(auth);
-}
+};
 
 // region Database Realtime
 const database = getDatabase(firebaseApp);

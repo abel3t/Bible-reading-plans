@@ -30,7 +30,7 @@ export default function ReadingPart({ id, title, content }: IReadingPartProps) {
     const yesterdayReceivedStreak = receivedStreaks[startOfYesterdayUnix] || false;
 
     const completedParts = Object.values(newCompletedParts).filter((isCompleted: any) => !!isCompleted);
-    let streak = userData.streak;
+    let streak = userData.streak || 0;
     let newReceivedStreaks: Record<string, boolean> = { ...receivedStreaks };
 
     if (completedParts.length === defaultPlanParts.length && !receivedStreaks[startOfDayUnix]) {
@@ -40,7 +40,8 @@ export default function ReadingPart({ id, title, content }: IReadingPartProps) {
         [startOfDayUnix]: true
       };
     } else if (receivedStreaks[startOfDayUnix]) {
-      --streak;
+      streak = streak > 0 ? streak - 1 : 0;
+
       newReceivedStreaks = {
         [startOfYesterdayUnix]: yesterdayReceivedStreak,
         [startOfDayUnix]: false
@@ -57,8 +58,8 @@ export default function ReadingPart({ id, title, content }: IReadingPartProps) {
       streak
     };
 
-    localStorage.setItem('newReceivedStreaks', JSON.stringify(newReceivedStreaks));
-    localStorage.setItem('userData', JSON.stringify(newUserData));
+    localStorage.setItem('receivedStreaks', JSON.stringify(newReceivedStreaks));
+    localStorage.setItem('users', JSON.stringify(newUserData));
 
     dispatch(updateReceivedStreaks(newReceivedStreaks));
     dispatch(updateUserData(newUserData));

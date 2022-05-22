@@ -15,9 +15,14 @@ const HeaderStreak: React.FC = () => {
   const isAuthenticated = useSelector(getIsAuthenticated);
   useEffect(() => {
     const startOfDayUnix = unixLocalTimeStartDate();
+    const { startOfDayUnix: _startOfDayUnix, yesterdayReceivedStreak: _yesterdayReceivedStreak } =
+        JSON.parse(localStorage.getItem('users') || '{}');
+    const storageReceivedStreaks = JSON.parse(localStorage.getItem('receivedStreaks') || '{}');
+
     const receivedStreaks = {
-      [startOfYesterdayUnix]: yesterdayReceivedStreak || false,
-      [startOfDayUnix]: todayReceivedStreak || false
+      ...storageReceivedStreaks,
+      [_startOfDayUnix || startOfYesterdayUnix]: yesterdayReceivedStreak || false,
+      [_yesterdayReceivedStreak || startOfDayUnix]: todayReceivedStreak || false
     };
 
     dispatch(updateReceivedStreaks(receivedStreaks));

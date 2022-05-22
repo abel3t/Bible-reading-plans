@@ -6,10 +6,16 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { useDispatch, useSelector } from 'react-redux';
 import Image from 'next/image';
 
-import { getIsAuthenticated, resetUserData, updateIsAuthenticated, updateUserData } from 'slices/user-data.slice';
+import {
+  getIsAuthenticated,
+  resetUserData,
+  updateIsAuthenticated,
+  updateReceivedStreaks,
+  updateUserData
+} from 'slices/user-data.slice';
 import { unixLocalTimeStartDate } from 'utils/datetime';
 import { setPathValue, signInWithGoogle, signOutGoogle } from 'services/firebase';
-import { resetSettings } from '../slices/settings.slice';
+import { resetSettings, updateSettings } from '../slices/settings.slice';
 
 const Auth: React.FC = () => {
   const [user, setUser]: [any, Function] = useState({});
@@ -48,9 +54,16 @@ const Auth: React.FC = () => {
 
   const dispatch = useDispatch();
   const handleSignWithGoogle = async () => {
-    const { userId, userImageUrl, displayName, userData, receivedStreaks }: any = await signInWithGoogle();
+    const { userId, userImageUrl, displayName, userData, settings, receivedStreaks }: any = await signInWithGoogle();
+
+    localStorage.setItem('settings', JSON.stringify(settings || {}));
+    localStorage.setItem('receivedStreaks', JSON.stringify(receivedStreaks || {}));
+    localStorage.setItem('users', JSON.stringify(userData || {}));
 
     dispatch(updateIsAuthenticated(true));
+    dispatch(updateSettings(settings));
+    dispatch(updateReceivedStreaks(receivedStreaks));
+    dispatch(updateUserData(userData));
 
     if (userId) {
       localStorage.setItem('userId', userId);
@@ -64,16 +77,17 @@ const Auth: React.FC = () => {
       localStorage.setItem('displayName', displayName);
     }
 
+    const startOfDayUnix = unixLocalTimeStartDate();
     const startOfYesterdayUnix = unixLocalTimeStartDate() - 86400;
+
+    const isCompletedToday = Object.values(userData?.completedParts[startOfDayUnix] || {})
+        .reduce((acc: any, val): any => acc && val, true);
+
     if (!receivedStreaks?.[startOfYesterdayUnix]) {
       dispatch(updateUserData({
         ...userData,
-        streak: 0
+        streak: isCompletedToday ? 1 : 0,
       }));
-      setPathValue(`users/${userId}`, {
-        ...userData,
-        streak: 0
-      }).then(() => true);
     } else {
       dispatch(updateUserData(userData));
     }
