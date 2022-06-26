@@ -33,7 +33,7 @@ export async function getReceivedStreaks(userId: string) {
 }
 
 export function getTodayPeopleNeedPrayer(): string[] {
-  const MAX_PEOPLE = 5;
+  const MAX_PEOPLE = 3;
   const NUMBER_OF_PEOPLE = spiritualFamilyPeople.length;
   const peopleNeedPrayerMap: Record<string, boolean> = {};
 
