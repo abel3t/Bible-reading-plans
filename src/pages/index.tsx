@@ -18,14 +18,36 @@ import { getSettings } from 'slices/settings.slice';
 import ReadingPart from 'components/ReadingPart';
 import { unixLocalTimeStartDate } from 'utils/datetime';
 import { getIsAuthenticated, updateIsAuthenticated } from '../slices/user-data.slice';
+import { getTodayPeopleNeedPrayer } from '../utils/shared';
 
 const Home: NextPage = () => {
   const [warn, setWarn] = React.useState(false);
   const [day, setDay] = React.useState(0);
+  const [peopleNeedPrayer, setPeopleNeedPrayer]: [string[], any] = React.useState([]);
 
   const settings: any = useSelector(getSettings);
   const dispatch = useDispatch();
   const isAuthenticated: boolean = useSelector(getIsAuthenticated);
+
+  useEffect(() => {
+    const today = unixLocalTimeStartDate();
+    const todayPrayer: Record<string, any> = JSON.parse(localStorage.getItem('todayPrayer') || '{}');
+    let {
+      generatedPrayerTime,
+      todayPeopleNeedPrayer
+    } = todayPrayer;
+
+    if (generatedPrayerTime !== today) {
+      todayPeopleNeedPrayer = getTodayPeopleNeedPrayer();
+      setPeopleNeedPrayer(todayPeopleNeedPrayer);
+      localStorage.setItem('todayPrayer', JSON.stringify({
+        generatedPrayerTime: today,
+        todayPeopleNeedPrayer: todayPeopleNeedPrayer
+      }));
+    } else {
+      setPeopleNeedPrayer(todayPeopleNeedPrayer);
+    }
+  }, []);
 
   useEffect(() => {
     const today = unixLocalTimeStartDate();
@@ -92,8 +114,34 @@ const Home: NextPage = () => {
                 })
             }
           </div>
+
+          <div className="mx-10 py-4 px-6 rounded-md sm:w-3/4 md:w-2/3 lg:w-1/2"
+               style={{ backgroundColor: '#5A89AD', margin: '20px auto' }}>
+
+            <p className="p-1 text-center rounded-sm font-bold text-2xl"
+               style={{ backgroundColor: '#4C7693' }}>Today&apos;s Prayer</p>
+            <div>
+              {peopleNeedPrayer.map((name: string, index) => <People name={name} key={index}/>)}
+            </div>
+
+          </div>
+
         </Box>
       </>
+  );
+};
+
+interface IPeople {
+  name: string;
+}
+
+const People = ({ name }: IPeople) => {
+  return (
+      <div className="mt-2 flex justify-between">
+        <div>
+          <span className="text-xl font-bold">{name}</span>
+        </div>
+      </div>
   );
 };
 

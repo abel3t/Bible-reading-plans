@@ -1,5 +1,6 @@
 import { unixLocalTimeStartDate } from './datetime';
 import { getPathValue, setPathValue } from '../services/firebase';
+import { spiritualFamilyPeople } from '../constant';
 
 export async function getReceivedStreaks(userId: string) {
   const startOfDayUnix = unixLocalTimeStartDate();
@@ -29,4 +30,21 @@ export async function getReceivedStreaks(userId: string) {
   }
 
   return receivedStreaks;
+}
+
+export function getTodayPeopleNeedPrayer(): string[] {
+  const MAX_PEOPLE = 5;
+  const NUMBER_OF_PEOPLE = spiritualFamilyPeople.length;
+  const peopleNeedPrayerMap: Record<string, boolean> = {};
+
+  for (let i = 0; i < MAX_PEOPLE; i++) {
+    let randNum = -1;
+    do {
+      randNum = Math.floor(Math.random() * NUMBER_OF_PEOPLE);
+    } while (peopleNeedPrayerMap[randNum]);
+
+    peopleNeedPrayerMap[randNum] = true;
+  }
+
+  return spiritualFamilyPeople.filter((_, index) => peopleNeedPrayerMap[index]);
 }
