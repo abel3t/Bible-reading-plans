@@ -508,23 +508,23 @@ export const defaultPlanParts: any[] = [
 ];
 
 export const spiritualFamilyPeople = [
-    'Anh Trí',
-    'Chị Tài',
-    'Đức Huy',
-    'Chị Quỳnh Anh',
-    'Anh Phúc',
-    'Thuận',
-    'Anh Quân',
+    'Anh Trí', 'Luân',
+    'Chị Tài', 'Ba',
+    'Đức Huy', 'Mẹ',
+    'Chị Quỳnh Anh', 'Yến',
+    'Anh Phúc', 'Quý',
+    'Thuận', 'Bà Nội',
+    'Anh Quân', 'Xuân',
     'Thảo',
     'Vinh',
     'Anh Phước',
     'Anh Hưởng',
     'Phát',
     'Chị Hồng',
-    'Quốc',
-    'Tuấn',
-    'Sang',
-    'Chị Huyền',
-    'Rô-mát',
-    'Anh Khải Huyền'
+    'Quốc', 'Hiếu',
+    'Tuấn', 'Chị Quyên',
+    'Sang', 'Chị T.Lý',
+    'Chị Huyền', 'Chị Quy',
+    'Rô-mát', 'Chị Mai',
+    'Anh Khải Huyền', 'Việt'
 ];

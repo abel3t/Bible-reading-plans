@@ -120,7 +120,7 @@ const Home: NextPage = () => {
 
             <p className="p-1 text-center rounded-sm font-bold text-2xl"
                style={{ backgroundColor: '#4C7693' }}>Today&apos;s Prayer</p>
-            <div>
+            <div className="grid grid-cols-4 gap-3 justify-items-center">
               {peopleNeedPrayer.map((name: string, index) => <People name={name} key={index}/>)}
             </div>
 
