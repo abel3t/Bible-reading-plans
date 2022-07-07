@@ -81,7 +81,7 @@ const Home: NextPage = () => {
     gospel: dailyGospel[day % dailyGospel.length],
     psalms: dailyPsalms[day % dailyPsalms.length],
     proverbs: dailyProverbs[day % dailyProverbs.length],
-    bible: dailyOldTestament[day % dailyOldTestament.length],
+    oldTestament: dailyOldTestament[day % dailyOldTestament.length],
     newTestament: dailyNewTestament[day % dailyNewTestament.length],
   };
 
