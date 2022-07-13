@@ -528,7 +528,7 @@ export const spiritualFamilyPeople = [
   "Hiếu",
   "Tuấn",
   "Chị Quyên",
-  "Chị T.Lý",
+  "Chị Lý",
   "Chị Huyền",
   "Chị Quy",
   "Chị Mai",
@@ -536,6 +536,8 @@ export const spiritualFamilyPeople = [
   "Chị Trinh",
 
   // Spiritual Friends
+  "Anh Giô-na",
+  "AC Tuấn - Lài",
   "Luân",
   "Anh Phước",
   "Anh Huyền",
