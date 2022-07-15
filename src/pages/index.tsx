@@ -21,7 +21,7 @@ import {
   getIsAuthenticated,
   updateIsAuthenticated,
 } from "../slices/user-data.slice";
-import { getTodayPeopleNeedPrayer } from "../utils/shared";
+import { getTodayPeopleNeedPrayer, getWeekBiblePlan } from "../utils/shared";
 
 const Home: NextPage = () => {
   const [warn, setWarn] = React.useState(false);
@@ -141,6 +141,22 @@ const Home: NextPage = () => {
                 />
               );
             })}
+        </div>
+
+        <div
+          className="mx-10 py-4 px-6 rounded-md sm:w-3/4 md:w-2/3 lg:w-1/2"
+          style={{ backgroundColor: "#5A89AD", margin: "20px auto" }}
+        >
+          <p
+            className="p-1 text-center rounded-sm font-bold text-2xl"
+            style={{ backgroundColor: "#4C7693" }}
+          >
+            Weekly Bible Study
+          </p>
+
+          <p className="mt-5 text-center font-bold text-xl">
+            {getWeekBiblePlan()}
+          </p>
         </div>
 
         <div

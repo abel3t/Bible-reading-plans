@@ -1,6 +1,7 @@
-import { unixLocalTimeStartDate } from './datetime';
-import { getPathValue, setPathValue } from '../services/firebase';
-import { spiritualFamilyPeople } from '../constant';
+import { unixLocalTimeStartDate } from "./datetime";
+import { getPathValue, setPathValue } from "../services/firebase";
+import { spiritualFamilyPeople, weeklyBibleStudy } from "../constant";
+import { getISOWeek } from "date-fns";
 
 export async function getReceivedStreaks(userId: string) {
   const startOfDayUnix = unixLocalTimeStartDate();
@@ -9,24 +10,33 @@ export async function getReceivedStreaks(userId: string) {
   if (!userId) {
     return {
       [startOfYesterdayUnix]: false,
-      [startOfDayUnix]: false
+      [startOfDayUnix]: false,
     };
   }
 
-  const yesterdayReceivedStreak: any = await getPathValue(`receivedStreaks/${userId}/${startOfYesterdayUnix}`);
-  const todayReceivedStreak: any = await getPathValue(`receivedStreaks/${userId}/${startOfDayUnix}`);
+  const yesterdayReceivedStreak: any = await getPathValue(
+    `receivedStreaks/${userId}/${startOfYesterdayUnix}`
+  );
+  const todayReceivedStreak: any = await getPathValue(
+    `receivedStreaks/${userId}/${startOfDayUnix}`
+  );
 
   const receivedStreaks = {
     [startOfYesterdayUnix]: yesterdayReceivedStreak || false,
-    [startOfDayUnix]: todayReceivedStreak || false
+    [startOfDayUnix]: todayReceivedStreak || false,
   };
 
   if (yesterdayReceivedStreak === null) {
-    setPathValue(`receivedStreaks/${userId}/${startOfYesterdayUnix}`, false).then(() => true);
+    setPathValue(
+      `receivedStreaks/${userId}/${startOfYesterdayUnix}`,
+      false
+    ).then(() => true);
   }
 
   if (todayReceivedStreak === null) {
-    setPathValue(`receivedStreaks/${userId}/${startOfDayUnix}`, false).then(() => true);
+    setPathValue(`receivedStreaks/${userId}/${startOfDayUnix}`, false).then(
+      () => true
+    );
   }
 
   return receivedStreaks;
@@ -47,4 +57,16 @@ export function getTodayPeopleNeedPrayer(): string[] {
   }
 
   return spiritualFamilyPeople.filter((_, index) => peopleNeedPrayerMap[index]);
+}
+
+export function getWeekBiblePlan() {
+  const week = getISOWeek(new Date());
+  for (let i = 0; i < weeklyBibleStudy.length; i++) {
+    if (
+      week >= weeklyBibleStudy[i].fromWeek &&
+      week <= weeklyBibleStudy[i].toWeek
+    ) {
+      return weeklyBibleStudy[i].book;
+    }
+  }
 }
